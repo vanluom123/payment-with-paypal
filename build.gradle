@@ -20,15 +20,32 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven {
+        name = "GitHubPackages"
+        url = "https://maven.pkg.github.com/vanluom123/crochetwebclient"
+        credentials {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     implementation 'org.liquibase:liquibase-core:4.23.0'
 
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.inject:guice:7.0.0'
+    implementation 'com.google.inject.extensions:guice-servlet:7.0.0'
+
+    implementation 'com.github.crochetwebclient:crochetwebclient:1.0.0'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
