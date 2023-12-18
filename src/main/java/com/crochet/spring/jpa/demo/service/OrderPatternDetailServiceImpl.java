@@ -3,11 +3,11 @@ package com.crochet.spring.jpa.demo.service;
 import com.crochet.spring.jpa.demo.model.OrderPatternDetail;
 import com.crochet.spring.jpa.demo.payload.request.paypal.PayPalOrderRequest;
 import com.crochet.spring.jpa.demo.payload.response.paypal.PaymentResponse;
-import com.crochet.spring.jpa.demo.repository.CustomerRepository;
+import com.crochet.spring.jpa.demo.repository.OrderRepository;
 import com.crochet.spring.jpa.demo.repository.PatternRepo;
-import com.crochet.spring.jpa.demo.repository.OrderPatternRepo;
+import com.crochet.spring.jpa.demo.repository.OrderPatternDetailRepo;
 import com.crochet.spring.jpa.demo.service.contact.PayPalService;
-import com.crochet.spring.jpa.demo.service.contact.OrderPatternService;
+import com.crochet.spring.jpa.demo.service.contact.OrderPatternDetailService;
 import com.crochet.spring.jpa.demo.type.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class OrderPatternServiceImpl implements OrderPatternService {
+public class OrderPatternDetailServiceImpl implements OrderPatternDetailService {
     @Autowired
-    private OrderPatternRepo orderPatternRepo;
+    private OrderPatternDetailRepo orderPatternDetailRepo;
 
     @Autowired
-    private CustomerRepository customerRepo;
+    private OrderRepository orderRepo;
 
     @Autowired
     private PatternRepo patternRepo;
@@ -33,23 +33,23 @@ public class OrderPatternServiceImpl implements OrderPatternService {
 
     @Transactional
     @Override
-    public String createPayment(String customerId,
+    public String createPayment(String orderId,
                                 String patternId,
                                 PayPalOrderRequest request) {
-        var customer = customerRepo.findById(UUID.fromString(customerId))
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        var order = orderRepo.findById(UUID.fromString(orderId))
+                .orElseThrow(() -> new RuntimeException("Order not found"));
         var pattern = patternRepo.findById(UUID.fromString(patternId))
                 .orElseThrow(() -> new RuntimeException("Pattern not found"));
 
         var response = payPalService.createOrder(request);
-        var paymentPattern = OrderPatternDetail.builder()
-                .customer(customer)
+        var orderPatternDetail = OrderPatternDetail.builder()
+                .order(order)
                 .pattern(pattern)
                 .transactionId(response.getId())
                 .status(OrderStatus.valueOf(response.getStatus()))
-                .paymentDate(Date.from(Instant.now()))
+                .orderDate(Date.from(Instant.now()))
                 .build();
-        orderPatternRepo.save(paymentPattern);
+        orderPatternDetailRepo.save(orderPatternDetail);
 
         var approvalLink = response.getLinks()
                 .stream()
@@ -65,10 +65,10 @@ public class OrderPatternServiceImpl implements OrderPatternService {
     @Override
     public String processPayPalOrderDetail(String transactionId) {
         var response = payPalService.getOrderDetail(transactionId);
-        var orderPattern = orderPatternRepo.findByTransactionId(transactionId)
+        var orderPatternDetail = orderPatternDetailRepo.findByTransactionId(transactionId)
                 .orElseThrow(() -> new RuntimeException("Order not existed"));
-        orderPattern.setStatus(OrderStatus.valueOf(response.getStatus()));
-        orderPatternRepo.save(orderPattern);
+        orderPatternDetail.setStatus(OrderStatus.valueOf(response.getStatus()));
+        orderPatternDetailRepo.save(orderPatternDetail);
         return "Processing complete";
     }
 }

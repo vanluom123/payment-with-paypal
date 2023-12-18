@@ -30,7 +30,7 @@ public class Pattern extends BaseEntity {
     private double price;
 
     @ElementCollection
-    @CollectionTable(name = "product_files", joinColumns = @JoinColumn(name = "product_id"))
+    @CollectionTable(name = "pattern_files", joinColumns = @JoinColumn(name = "pattern_id"))
     @Column(name = "file_name")
     private List<String> files;
 
