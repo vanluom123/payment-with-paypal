@@ -1,16 +1,16 @@
 package com.crochet.spring.jpa.demo.service.contact;
 
-import com.crochet.spring.jpa.demo.payload.result.FileResult;
+import com.crochet.spring.jpa.demo.payload.response.FileResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface FileService {
-    FileResult uploadFile(String productId, MultipartFile imageFile);
+    FileResponse uploadFile(String productId, MultipartFile imageFile);
 
-    List<FileResult> uploadFiles(String productId, MultipartFile[] files);
+    List<FileResponse> uploadFiles(String productId, MultipartFile[] files);
 
-    FileResult getByName(String fileName);
+    FileResponse getByName(String fileName);
 
     byte[] getByteByName(String fileName);
 }

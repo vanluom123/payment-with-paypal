@@ -1,8 +1,8 @@
 package com.crochet.spring.jpa.demo.service.contact;
 
 import com.crochet.spring.jpa.demo.payload.request.OrderRequest;
-import com.crochet.spring.jpa.demo.payload.result.OrderResult;
+import com.crochet.spring.jpa.demo.payload.response.OrderResponse;
 
 public interface OrderService {
-    OrderResult orderProduct(OrderRequest request);
+    OrderResponse orderProduct(OrderRequest request);
 }

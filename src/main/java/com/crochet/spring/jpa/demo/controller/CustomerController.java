@@ -1,8 +1,8 @@
 package com.crochet.spring.jpa.demo.controller;
 
 import com.crochet.spring.jpa.demo.payload.request.CustomerRequest;
-import com.crochet.spring.jpa.demo.payload.result.ApiResult;
-import com.crochet.spring.jpa.demo.payload.result.CustomerResult;
+import com.crochet.spring.jpa.demo.payload.response.ApiResponse;
+import com.crochet.spring.jpa.demo.payload.response.CustomerResponse;
 import com.crochet.spring.jpa.demo.service.contact.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +21,15 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping("/save")
-    public ResponseEntity<CustomerResult> save(@RequestBody CustomerRequest request) {
-        CustomerResult result = customerService.save(request);
+    public ResponseEntity<CustomerResponse> save(@RequestBody CustomerRequest request) {
+        CustomerResponse result = customerService.save(request);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping
-    public ResponseEntity<ApiResult<List<CustomerResult>>> getAll() {
+    public ResponseEntity<ApiResponse<List<CustomerResponse>>> getAll() {
         var cus = customerService.getAll();
-        var result = ApiResult.<List<CustomerResult>>builder()
+        var result = ApiResponse.<List<CustomerResponse>>builder()
                 .message("Get success")
                 .result(cus)
                 .build();

@@ -4,7 +4,7 @@ import com.crochet.spring.jpa.demo.mapper.FileMapper;
 import com.crochet.spring.jpa.demo.model.FileModal;
 import com.crochet.spring.jpa.demo.repository.FileRepository;
 import com.crochet.spring.jpa.demo.repository.ProductRepository;
-import com.crochet.spring.jpa.demo.payload.result.FileResult;
+import com.crochet.spring.jpa.demo.payload.response.FileResponse;
 import com.crochet.spring.jpa.demo.service.contact.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class FileServiceImpl implements FileService {
 
     @Transactional
     @Override
-    public FileResult uploadFile(String productId, MultipartFile file) {
+    public FileResponse uploadFile(String productId, MultipartFile file) {
         var product = productRepository.findById(UUID.fromString(productId))
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -55,7 +55,7 @@ public class FileServiceImpl implements FileService {
 
     @Transactional
     @Override
-    public List<FileResult> uploadFiles(String productId, MultipartFile[] files) {
+    public List<FileResponse> uploadFiles(String productId, MultipartFile[] files) {
         var product = productRepository.findById(UUID.fromString(productId))
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -71,7 +71,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public FileResult getByName(String fileName) {
+    public FileResponse getByName(String fileName) {
         var fileModal = fileRepository.findByOriginalFileName(fileName)
                 .orElseThrow(() -> new RuntimeException("File not found"));
 

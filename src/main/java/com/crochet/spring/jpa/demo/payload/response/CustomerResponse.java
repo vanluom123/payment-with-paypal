@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.result;
+package com.crochet.spring.jpa.demo.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerResult {
+public class CustomerResponse {
     private String id;
     private String name;
     private String address;

@@ -2,9 +2,9 @@ package com.crochet.spring.jpa.demo.service;
 
 import com.crochet.spring.jpa.demo.mapper.CustomerMapper;
 import com.crochet.spring.jpa.demo.model.Customer;
+import com.crochet.spring.jpa.demo.payload.response.CustomerResponse;
 import com.crochet.spring.jpa.demo.repository.CustomerRepository;
 import com.crochet.spring.jpa.demo.payload.request.CustomerRequest;
-import com.crochet.spring.jpa.demo.payload.result.CustomerResult;
 import com.crochet.spring.jpa.demo.service.contact.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     @Override
-    public CustomerResult save(CustomerRequest request) {
+    public CustomerResponse save(CustomerRequest request) {
         Customer customer;
         if (request.getId() == null) {
             customer = Customer.builder()
@@ -46,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerResult> getAll() {
+    public List<CustomerResponse> getAll() {
         var cus = customerRepository.findAll();
         return CustomerMapper.INSTANCE.toResults(cus);
     }

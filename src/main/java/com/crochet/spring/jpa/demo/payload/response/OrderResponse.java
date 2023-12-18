@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.result;
+package com.crochet.spring.jpa.demo.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter @Setter
 @Builder
 @AllArgsConstructor
-public class OrderResult {
+public class OrderResponse {
     private String orderDate;
     private Integer quantity;
     private Double totalPrice;

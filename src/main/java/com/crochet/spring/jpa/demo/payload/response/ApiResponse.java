@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.result;
+package com.crochet.spring.jpa.demo.payload.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter @Setter
 @Builder
 @AllArgsConstructor
-public class ApiResult<T> {
+public class ApiResponse<T> {
     private String message;
     private T result;
 }

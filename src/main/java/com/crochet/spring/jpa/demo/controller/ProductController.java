@@ -1,8 +1,8 @@
 package com.crochet.spring.jpa.demo.controller;
 
 import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
-import com.crochet.spring.jpa.demo.payload.result.ApiResult;
-import com.crochet.spring.jpa.demo.payload.result.ProductResult;
+import com.crochet.spring.jpa.demo.payload.response.ApiResponse;
+import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
 import com.crochet.spring.jpa.demo.service.contact.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiResult<ProductResult>> saveProduct(@RequestBody ProductRequest request) {
-        var result = ApiResult.<ProductResult>builder()
+    public ResponseEntity<ApiResponse<ProductResponse>> saveProduct(@RequestBody ProductRequest request) {
+        var result = ApiResponse.<ProductResponse>builder()
                 .message("Create product success")
                 .result(productService.saveProduct(request))
                 .build();
@@ -30,8 +30,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResult<List<ProductResult>>> getAll() {
-        var result = ApiResult.<List<ProductResult>>builder()
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> getAll() {
+        var result = ApiResponse.<List<ProductResponse>>builder()
                 .message("Get success")
                 .result(productService.getAll())
                 .build();

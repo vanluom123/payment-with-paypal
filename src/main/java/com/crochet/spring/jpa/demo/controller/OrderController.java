@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.controller;
 
 import com.crochet.spring.jpa.demo.payload.request.OrderRequest;
-import com.crochet.spring.jpa.demo.payload.result.OrderResult;
+import com.crochet.spring.jpa.demo.payload.response.OrderResponse;
 import com.crochet.spring.jpa.demo.service.contact.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/order-product")
-    public ResponseEntity<OrderResult> orderProduct(@RequestBody OrderRequest request) {
+    public ResponseEntity<OrderResponse> orderProduct(@RequestBody OrderRequest request) {
         return ResponseEntity.ok(orderService.orderProduct(request));
     }
 }

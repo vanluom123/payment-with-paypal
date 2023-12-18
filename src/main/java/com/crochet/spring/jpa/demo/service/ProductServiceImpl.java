@@ -4,7 +4,7 @@ import com.crochet.spring.jpa.demo.mapper.ProductMapper;
 import com.crochet.spring.jpa.demo.model.Product;
 import com.crochet.spring.jpa.demo.repository.ProductRepository;
 import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
-import com.crochet.spring.jpa.demo.payload.result.ProductResult;
+import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
 import com.crochet.spring.jpa.demo.service.contact.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public ProductResult saveProduct(ProductRequest request) {
+    public ProductResponse saveProduct(ProductRequest request) {
         Product product;
         if (request.getId() == null) {
             // Create product
@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResult> getAll() {
+    public List<ProductResponse> getAll() {
         var products = productRepo.findAll();
         return ProductMapper.INSTANCE.productsToProductResults(products);
     }

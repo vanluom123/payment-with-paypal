@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.controller;
 
-import com.crochet.spring.jpa.demo.payload.result.FileResult;
+import com.crochet.spring.jpa.demo.payload.response.FileResponse;
 import com.crochet.spring.jpa.demo.service.contact.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,15 +23,15 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping("/upload")
-    public ResponseEntity<FileResult> uploadFile(@RequestParam("productId") String productId,
-                                                 @RequestPart MultipartFile file) {
+    public ResponseEntity<FileResponse> uploadFile(@RequestParam("productId") String productId,
+                                                   @RequestPart MultipartFile file) {
         var result = fileService.uploadFile(productId, file);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/uploads")
-    public ResponseEntity<List<FileResult>> uploadFiles(@RequestParam("productId") String productId,
-                                                        @RequestPart MultipartFile[] files) {
+    public ResponseEntity<List<FileResponse>> uploadFiles(@RequestParam("productId") String productId,
+                                                          @RequestPart MultipartFile[] files) {
         var results = fileService.uploadFiles(productId, files);
         return ResponseEntity.ok(results);
     }

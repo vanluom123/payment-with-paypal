@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.mapper;
 
 import com.crochet.spring.jpa.demo.model.FileModal;
-import com.crochet.spring.jpa.demo.payload.result.FileResult;
+import com.crochet.spring.jpa.demo.payload.response.FileResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -17,9 +17,9 @@ public interface FileMapper {
     FileMapper INSTANCE = Mappers.getMapper(FileMapper.class);
 
     @Mapping(target = "bytes", source = "bytes", qualifiedByName = "decoding")
-    FileResult fileModalToFileResult(FileModal fileModal);
+    FileResponse fileModalToFileResult(FileModal fileModal);
 
-    default List<FileResult> fileModalToFileResults(List<FileModal> fileModals) {
+    default List<FileResponse> fileModalToFileResults(List<FileModal> fileModals) {
         if (ObjectUtils.isEmpty(fileModals)) {
             return null;
         }

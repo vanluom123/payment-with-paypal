@@ -1,12 +1,12 @@
 package com.crochet.spring.jpa.demo.service.contact;
 
 import com.crochet.spring.jpa.demo.payload.request.CustomerRequest;
-import com.crochet.spring.jpa.demo.payload.result.CustomerResult;
+import com.crochet.spring.jpa.demo.payload.response.CustomerResponse;
 
 import java.util.List;
 
 public interface CustomerService {
-    CustomerResult save(CustomerRequest request);
+    CustomerResponse save(CustomerRequest request);
 
-    List<CustomerResult> getAll();
+    List<CustomerResponse> getAll();
 }

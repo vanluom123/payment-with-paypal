@@ -4,7 +4,7 @@ import com.crochet.spring.jpa.demo.mapper.OrderMapper;
 import com.crochet.spring.jpa.demo.model.Order;
 import com.crochet.spring.jpa.demo.model.OrderDetail;
 import com.crochet.spring.jpa.demo.payload.request.OrderRequest;
-import com.crochet.spring.jpa.demo.payload.result.OrderResult;
+import com.crochet.spring.jpa.demo.payload.response.OrderResponse;
 import com.crochet.spring.jpa.demo.repository.CustomerRepository;
 import com.crochet.spring.jpa.demo.repository.OrderDetailRepository;
 import com.crochet.spring.jpa.demo.repository.OrderRepository;
@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public OrderResult orderProduct(OrderRequest request) {
+    public OrderResponse orderProduct(OrderRequest request) {
         var customer = customerRepo.findById(UUID.fromString(request.getCustomerId()))
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 

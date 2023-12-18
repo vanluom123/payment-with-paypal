@@ -15,7 +15,6 @@ public class WebClientConfiguration {
     @Scope(scopeName = "prototype")
     public WebClientService webClientService() {
         Injector injector = Guice.createInjector(new WebClientModule());
-        WebClientService service = injector.getInstance(WebClientServiceImpl.class);
-        return service;
+        return injector.getInstance(WebClientServiceImpl.class);
     }
 }

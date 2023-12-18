@@ -2,7 +2,7 @@ package com.crochet.spring.jpa.demo.mapper;
 
 import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.payload.request.CustomerRequest;
-import com.crochet.spring.jpa.demo.payload.result.CustomerResult;
+import com.crochet.spring.jpa.demo.payload.response.CustomerResponse;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
@@ -21,9 +21,9 @@ import java.util.UUID;
 public interface CustomerMapper {
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
-    CustomerResult customerToCustomerResult(Customer customer);
+    CustomerResponse customerToCustomerResult(Customer customer);
 
-    List<CustomerResult> toResults(Collection<Customer> customers);
+    List<CustomerResponse> toResults(Collection<Customer> customers);
 
     @Mapping(target = "id", source = "id", qualifiedByName = "stringToUUID")
     Customer customerRequestToCustomer(CustomerRequest request);
