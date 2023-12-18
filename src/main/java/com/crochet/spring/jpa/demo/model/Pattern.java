@@ -35,5 +35,5 @@ public class Pattern extends BaseEntity {
     private List<String> files;
 
     @OneToMany(mappedBy = "pattern")
-    private List<OrderPattern> orderPatterns;
+    private List<OrderPatternDetail> orderPatternDetails;
 }

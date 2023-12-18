@@ -23,11 +23,11 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "order_pattern")
+@Table(name = "order_pattern_detail")
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderPattern extends BaseEntity {
+public class OrderPatternDetail extends BaseEntity {
     @Column(name = "transaction_id", nullable = false)
     private String transactionId;
 
@@ -37,12 +37,12 @@ public class OrderPattern extends BaseEntity {
 
     @CreationTimestamp
     @Temporal(TemporalType.DATE)
-    @Column(name = "payment_date", nullable = false)
-    private Date paymentDate;
+    @Column(name = "order_date", nullable = false)
+    private Date orderDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pattern_id", nullable = false)

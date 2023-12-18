@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.service;
 
-import com.crochet.spring.jpa.demo.model.OrderPattern;
+import com.crochet.spring.jpa.demo.model.OrderPatternDetail;
 import com.crochet.spring.jpa.demo.payload.request.paypal.PayPalOrderRequest;
 import com.crochet.spring.jpa.demo.payload.response.paypal.PaymentResponse;
 import com.crochet.spring.jpa.demo.repository.CustomerRepository;
@@ -42,7 +42,7 @@ public class OrderPatternServiceImpl implements OrderPatternService {
                 .orElseThrow(() -> new RuntimeException("Pattern not found"));
 
         var response = payPalService.createOrder(request);
-        var paymentPattern = OrderPattern.builder()
+        var paymentPattern = OrderPatternDetail.builder()
                 .customer(customer)
                 .pattern(pattern)
                 .transactionId(response.getId())

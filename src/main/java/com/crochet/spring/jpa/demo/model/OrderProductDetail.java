@@ -3,9 +3,6 @@ package com.crochet.spring.jpa.demo.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -19,7 +16,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -28,11 +24,9 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderProductDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(nullable = false)
-    private UUID id;
+public class OrderProductDetail extends BaseEntity {
+    @Column(name = "transaction_id", nullable = false)
+    private String transactionId;
 
     @CreationTimestamp
     @Temporal(TemporalType.DATE)
@@ -44,9 +38,6 @@ public class OrderProductDetail {
 
     @Column(name = "price", columnDefinition = "DOUBLE DEFAULT 0")
     private Double price = 0.0;
-
-    @Column(name = "transaction_id", nullable = false)
-    private String transactionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
