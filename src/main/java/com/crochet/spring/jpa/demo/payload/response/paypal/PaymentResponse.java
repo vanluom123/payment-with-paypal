@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.response;
+package com.crochet.spring.jpa.demo.payload.response.paypal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

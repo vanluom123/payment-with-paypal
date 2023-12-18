@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.response;
+package com.crochet.spring.jpa.demo.payload.response.paypal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CapturePaymentResponse {
-
     private String id;
     private String status;
 

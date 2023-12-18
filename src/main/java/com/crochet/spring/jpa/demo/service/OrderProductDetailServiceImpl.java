@@ -2,14 +2,14 @@ package com.crochet.spring.jpa.demo.service;
 
 import com.crochet.spring.jpa.demo.mapper.OrderMapper;
 import com.crochet.spring.jpa.demo.model.Order;
-import com.crochet.spring.jpa.demo.model.OrderDetail;
+import com.crochet.spring.jpa.demo.model.OrderProductDetail;
 import com.crochet.spring.jpa.demo.payload.request.OrderRequest;
 import com.crochet.spring.jpa.demo.payload.response.OrderResponse;
 import com.crochet.spring.jpa.demo.repository.CustomerRepository;
-import com.crochet.spring.jpa.demo.repository.OrderDetailRepository;
+import com.crochet.spring.jpa.demo.repository.OrderProductDetailRepository;
 import com.crochet.spring.jpa.demo.repository.OrderRepository;
 import com.crochet.spring.jpa.demo.repository.ProductRepository;
-import com.crochet.spring.jpa.demo.service.contact.OrderService;
+import com.crochet.spring.jpa.demo.service.contact.OrderProductDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +20,12 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class OrderServiceImpl implements OrderService {
-
+public class OrderProductDetailServiceImpl implements OrderProductDetailService {
     @Autowired
     private OrderRepository orderRepo;
 
     @Autowired
-    private OrderDetailRepository orderDetailRepo;
+    private OrderProductDetailRepository orderDetailRepo;
 
     @Autowired
     private CustomerRepository customerRepo;
@@ -49,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         order = orderRepo.save(order);
 
-        var orderDetail = OrderDetail.builder()
+        var orderDetail = OrderProductDetail.builder()
                 .order(order)
                 .product(product)
                 .orderDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))

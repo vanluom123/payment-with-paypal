@@ -41,7 +41,7 @@ public class Product {
     private String description;
 
     @OneToMany(mappedBy = "product")
-    private List<OrderDetail> orderDetails;
+    private List<OrderProductDetail> orderProductDetails;
 
     @OneToMany(mappedBy = "product")
     private List<FileModal> fileModals;

@@ -11,7 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,11 +24,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "OrderDetails")
+@Table(name = "order_product_detail")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDetail {
+public class OrderProductDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
@@ -40,12 +39,13 @@ public class OrderDetail {
     @Column(name = "order_date", nullable = false)
     private Date orderDate;
 
-    @Column(name = "quantity", columnDefinition = "integer default 1")
+    @Column(name = "quantity", columnDefinition = "INTEGER DEFAULT 1")
     private Integer quantity = 1;
 
     @Column(name = "price", columnDefinition = "DOUBLE DEFAULT 0")
     private Double price = 0.0;
 
+    @Column(name = "transaction_id", nullable = false)
     private String transactionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
