@@ -27,7 +27,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer extends BaseEntity {
-    @Column(name = "name", length = 255, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "address", length = 512, nullable = false)
@@ -39,10 +39,10 @@ public class Customer extends BaseEntity {
     @Column(name = "phone", length = 32, nullable = false)
     private String phone;
 
-    @Column(name = "username", length = 255, nullable = false)
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "password", length = 255, nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "enabled", nullable = false)
