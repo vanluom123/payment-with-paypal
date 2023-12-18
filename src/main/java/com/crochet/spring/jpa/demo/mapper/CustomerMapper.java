@@ -25,9 +25,6 @@ public interface CustomerMapper {
 
     List<CustomerResponse> toResults(Collection<Customer> customers);
 
-    @Mapping(target = "id", source = "id", qualifiedByName = "stringToUUID")
-    Customer customerRequestToCustomer(CustomerRequest request);
-
     @Named("stringToUUID")
     default UUID stringToUUID(String id) {
         if (id == null) {

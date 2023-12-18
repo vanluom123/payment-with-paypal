@@ -114,3 +114,5 @@ ALTER TABLE order_product_detail
 ALTER TABLE pattern_files
     ADD CONSTRAINT fk_pattern_files_on_pattern FOREIGN KEY (pattern_id) REFERENCES pattern (id);
 
+ALTER TABLE pattern_files
+    ADD CONSTRAINT fk_pattern_files_on_pattern FOREIGN KEY (pattern_id) REFERENCES pattern (id);

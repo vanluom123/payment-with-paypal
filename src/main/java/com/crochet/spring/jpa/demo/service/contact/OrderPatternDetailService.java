@@ -1,9 +1,9 @@
 package com.crochet.spring.jpa.demo.service.contact;
 
-import com.crochet.spring.jpa.demo.payload.request.paypal.PayPalOrderRequest;
+import com.crochet.spring.jpa.demo.payload.response.OrderPatternDetailResponse;
 
 public interface OrderPatternDetailService {
-    String createPayment(String orderId, String patternId, PayPalOrderRequest request);
+    OrderPatternDetailResponse createPayment(String customerId, String patternId);
 
     String processPayPalOrderDetail(String transactionId);
 }
