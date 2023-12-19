@@ -95,7 +95,7 @@ public class OrderPatternDetailServiceImpl implements OrderPatternDetailService 
     @Transactional
     @Override
     public String processPayPalOrderDetail(String transactionId) {
-        var response = payPalService.getOrderDetail(transactionId);
+        var response = payPalService.capturePaymentOrder(transactionId);
         var orderPatternDetail = orderPatternDetailRepo.findByTransactionId(transactionId)
                 .orElseThrow(() -> new RuntimeException("Order not existed"));
         orderPatternDetail.setStatus(OrderStatus.valueOf(response.getStatus()));
