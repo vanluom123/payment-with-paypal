@@ -10,5 +10,5 @@ public class ProductResponse {
     private String name;
     private double price;
     private String description;
-    private List<FileResponse> files;
+    private List<String> files;
 }

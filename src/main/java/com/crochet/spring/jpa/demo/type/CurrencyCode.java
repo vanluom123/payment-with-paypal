@@ -10,5 +10,5 @@ public enum CurrencyCode {
         this.value = value;
     }
 
-    private String value;
+    private final String value;
 }

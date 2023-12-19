@@ -35,8 +35,9 @@ public class Pattern extends BaseEntity {
     private CurrencyCode currencyCode;
 
     @ElementCollection
-    @CollectionTable(name = "pattern_files", joinColumns = @JoinColumn(name = "pattern_id", nullable = false))
-    @Column(name = "file_name")
+    @CollectionTable(name = "pattern_files",
+            joinColumns = @JoinColumn(name = "pattern_id", nullable = false))
+    @Column(name = "file_name", columnDefinition = "LONGBLOB")
     private List<String> files;
 
     @OneToMany(mappedBy = "pattern")
