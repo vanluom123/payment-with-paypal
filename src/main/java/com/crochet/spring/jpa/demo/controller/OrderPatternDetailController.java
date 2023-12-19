@@ -1,7 +1,8 @@
 package com.crochet.spring.jpa.demo.controller;
 
-import com.crochet.spring.jpa.demo.payload.response.OrderPatternDetailResponse;
+import com.crochet.spring.jpa.demo.payload.dto.OrderResponseDTO;
 import com.crochet.spring.jpa.demo.service.contact.OrderPatternDetailService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,14 +18,15 @@ public class OrderPatternDetailController {
     private OrderPatternDetailService orderPatternDetailService;
 
     @PostMapping("/create")
-    public ResponseEntity<OrderPatternDetailResponse> createPayment(@RequestParam("customerId") String customerId,
-                                                                    @RequestParam("patternId") String patternId) {
+    public ResponseEntity<OrderResponseDTO> createPayment(@RequestParam("customerId") String customerId,
+                                                          @RequestParam("patternId") String patternId) {
         var response = orderPatternDetailService.createPayment(customerId, patternId);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/success")
-    public ResponseEntity<String> paymentSuccess(String transactionId) {
+    public ResponseEntity<String> paymentSuccess(HttpServletRequest httpServletRequest) {
+        var transactionId = httpServletRequest.getParameter("token");
         var response = orderPatternDetailService.processPayPalOrderDetail(transactionId);
         return ResponseEntity.ok(response);
     }

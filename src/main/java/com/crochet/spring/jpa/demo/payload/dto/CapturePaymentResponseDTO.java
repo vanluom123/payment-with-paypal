@@ -1,15 +1,12 @@
 package com.crochet.spring.jpa.demo.payload.dto;
 
 import com.crochet.spring.jpa.demo.type.OrderStatus;
-import lombok.Builder;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-@Builder
-public class OrderResponseDTO {
-    private String id;
+public class CapturePaymentResponseDTO {
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
-    private List<LinkDTO> links;
 }

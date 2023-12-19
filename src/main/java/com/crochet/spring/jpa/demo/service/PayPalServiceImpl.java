@@ -1,13 +1,10 @@
 package com.crochet.spring.jpa.demo.service;
 
-import com.crochet.spring.jpa.demo.payload.request.paypal.ConfirmationOrderRequest;
-import com.crochet.spring.jpa.demo.payload.request.paypal.PayPalOrderRequest;
-import com.crochet.spring.jpa.demo.payload.response.paypal.AccessTokenResponse;
-import com.crochet.spring.jpa.demo.payload.response.paypal.CapturePaymentResponse;
-import com.crochet.spring.jpa.demo.payload.response.paypal.ConfirmOrderResponse;
-import com.crochet.spring.jpa.demo.payload.response.paypal.PayPalOrderDetailResponse;
-import com.crochet.spring.jpa.demo.payload.response.paypal.PaymentResponse;
+import com.crochet.spring.jpa.demo.payload.dto.OrderDTO;
+import com.crochet.spring.jpa.demo.payload.response.AccessTokenResponse;
 import com.crochet.spring.jpa.demo.service.contact.PayPalService;
+import com.google.gson.Gson;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,9 @@ public class PayPalServiceImpl implements PayPalService {
     private final String password = "EENLA_G2RtWbTYgY6i90ApZkYdctBuY2AcgnsHhct0sbCnwWiM_J55NTmmEsLbiDcNpnLEfBWPneTmwF";
 
     private final WebClientService webClientService;
+
+    @Autowired
+    private Gson gson;
 
     @Autowired
     public PayPalServiceImpl(WebClientService webClientService) {
@@ -49,41 +49,43 @@ public class PayPalServiceImpl implements PayPalService {
         return accessTokenResponse;
     }
 
+    @SneakyThrows
     @Override
-    public PaymentResponse createOrder(PayPalOrderRequest request) {
+    public String createOrder(OrderDTO orderDTO) {
+        String payload = gson.toJson(orderDTO);
         String uri = "https://api-m.sandbox.paypal.com/v2/checkout/orders";
-        PaymentResponse paymentResponse = webClientService.invokeApi(uri,
+        String paymentResponse = webClientService.invokeApi(uri,
                 HttpMethod.POST,
-                request,
-                PaymentResponse.class).block();
+                payload,
+                String.class).block();
         return paymentResponse;
     }
 
     @Override
-    public PayPalOrderDetailResponse getOrderDetail(String orderId) {
+    public String getOrderDetail(String orderId) {
         String uri = "https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId;
-        PayPalOrderDetailResponse response = webClientService.invokeApi(uri,
+        var response = webClientService.invokeApi(uri,
                 HttpMethod.GET,
-                PayPalOrderDetailResponse.class).block();
+                String.class).block();
         return response;
     }
 
     @Override
-    public ConfirmOrderResponse comfirm(String orderId, ConfirmationOrderRequest request) {
+    public String confirm(String orderId, String request) {
         String uri = "https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/confirm-payment-source";
         var response = webClientService.invokeApi(uri,
                 HttpMethod.POST,
                 request,
-                ConfirmOrderResponse.class).block();
+                String.class).block();
         return response;
     }
 
     @Override
-    public CapturePaymentResponse capturePayment(String orderId) {
+    public String capturePayment(String orderId) {
         String uri = "https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/capture";
         var response = webClientService.invokeApi(uri,
                 HttpMethod.POST,
-                CapturePaymentResponse.class).block();
+                String.class).block();
         return response;
     }
 }

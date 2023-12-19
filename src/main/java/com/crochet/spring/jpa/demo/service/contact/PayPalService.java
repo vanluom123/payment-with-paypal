@@ -1,21 +1,16 @@
 package com.crochet.spring.jpa.demo.service.contact;
 
-import com.crochet.spring.jpa.demo.payload.request.paypal.ConfirmationOrderRequest;
-import com.crochet.spring.jpa.demo.payload.request.paypal.PayPalOrderRequest;
-import com.crochet.spring.jpa.demo.payload.response.paypal.AccessTokenResponse;
-import com.crochet.spring.jpa.demo.payload.response.paypal.CapturePaymentResponse;
-import com.crochet.spring.jpa.demo.payload.response.paypal.ConfirmOrderResponse;
-import com.crochet.spring.jpa.demo.payload.response.paypal.PayPalOrderDetailResponse;
-import com.crochet.spring.jpa.demo.payload.response.paypal.PaymentResponse;
+import com.crochet.spring.jpa.demo.payload.dto.OrderDTO;
+import com.crochet.spring.jpa.demo.payload.response.AccessTokenResponse;
 
 public interface PayPalService {
     AccessTokenResponse getAccessToken();
 
-    PaymentResponse createOrder(PayPalOrderRequest request);
+    String createOrder(OrderDTO orderDTO);
 
-    PayPalOrderDetailResponse getOrderDetail(String orderId);
+    String getOrderDetail(String orderId);
 
-    ConfirmOrderResponse comfirm(String orderId, ConfirmationOrderRequest request);
+    String confirm(String orderId, String request);
 
-    CapturePaymentResponse capturePayment(String orderId);
+    String capturePayment(String orderId);
 }
