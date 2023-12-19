@@ -8,8 +8,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +23,6 @@ import java.util.Objects;
 @Table(name = "customer")
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 public class Customer extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;

@@ -44,11 +44,11 @@ public class PayPalController {
 
     @PostMapping("/confirm-order")
     public Mono<ConfirmOrderResponse> confirmOrder(@RequestParam String orderId, @RequestBody ConfirmationOrderRequest request) {
-        return Mono.just(payPalService.confirmOrder(orderId, request));
+        return Mono.just(payPalService.comfirm(orderId, request));
     }
 
     @PostMapping("/capture-payment")
     public Mono<CapturePaymentResponse> capturePaymentOrder(@RequestParam String orderId) {
-        return Mono.just(payPalService.capturePaymentOrder(orderId));
+        return Mono.just(payPalService.capturePayment(orderId));
     }
 }

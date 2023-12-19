@@ -4,13 +4,12 @@ import com.crochet.spring.jpa.demo.type.OrderIntent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-@Getter @Setter
+@Data
 @NoArgsConstructor
 public class PayPalOrderRequest {
     @Enumerated(EnumType.STRING)
@@ -18,12 +17,12 @@ public class PayPalOrderRequest {
     @JsonProperty("purchase_units")
     private List<PurchaseUnit> purchaseUnits;
 
-    @Getter @Setter
+    @Data
     @NoArgsConstructor
     public static class PurchaseUnit {
         private PayPalAmount amount;
 
-        @Getter @Setter
+        @Data
         @NoArgsConstructor
         public static class PayPalAmount {
             @JsonProperty("currency_code")

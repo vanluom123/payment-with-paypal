@@ -15,7 +15,7 @@ public interface PayPalService {
 
     PayPalOrderDetailResponse getOrderDetail(String orderId);
 
-    ConfirmOrderResponse confirmOrder(String orderId, ConfirmationOrderRequest request);
+    ConfirmOrderResponse comfirm(String orderId, ConfirmationOrderRequest request);
 
-    CapturePaymentResponse capturePaymentOrder(String orderId);
+    CapturePaymentResponse capturePayment(String orderId);
 }

@@ -1,14 +1,12 @@
 package com.crochet.spring.jpa.demo.payload.response.paypal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PaymentResponse {
@@ -16,8 +14,7 @@ public class PaymentResponse {
     private String status;
     private List<Link> links;
 
-    @Setter
-    @Getter
+    @Data
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Link {

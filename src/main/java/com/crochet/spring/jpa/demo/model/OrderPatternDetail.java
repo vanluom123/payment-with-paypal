@@ -11,7 +11,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +24,6 @@ import java.util.Date;
 @Entity
 @Table(name = "order_pattern_detail")
 @SuperBuilder
-@AllArgsConstructor
 @NoArgsConstructor
 public class OrderPatternDetail extends BaseEntity {
     @Column(name = "transaction_id", nullable = false)

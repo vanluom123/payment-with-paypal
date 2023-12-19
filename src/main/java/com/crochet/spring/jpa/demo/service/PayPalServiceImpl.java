@@ -69,7 +69,7 @@ public class PayPalServiceImpl implements PayPalService {
     }
 
     @Override
-    public ConfirmOrderResponse confirmOrder(String orderId, ConfirmationOrderRequest request) {
+    public ConfirmOrderResponse comfirm(String orderId, ConfirmationOrderRequest request) {
         String uri = "https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/confirm-payment-source";
         var response = webClientService.invokeApi(uri,
                 HttpMethod.POST,
@@ -79,7 +79,7 @@ public class PayPalServiceImpl implements PayPalService {
     }
 
     @Override
-    public CapturePaymentResponse capturePaymentOrder(String orderId) {
+    public CapturePaymentResponse capturePayment(String orderId) {
         String uri = "https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/capture";
         var response = webClientService.invokeApi(uri,
                 HttpMethod.POST,

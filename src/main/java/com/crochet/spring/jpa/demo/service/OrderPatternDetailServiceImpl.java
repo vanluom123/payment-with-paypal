@@ -12,6 +12,7 @@ import com.crochet.spring.jpa.demo.repository.OrderRepository;
 import com.crochet.spring.jpa.demo.repository.PatternRepo;
 import com.crochet.spring.jpa.demo.service.contact.OrderPatternDetailService;
 import com.crochet.spring.jpa.demo.service.contact.PayPalService;
+import com.crochet.spring.jpa.demo.type.CurrencyCode;
 import com.crochet.spring.jpa.demo.type.OrderIntent;
 import com.crochet.spring.jpa.demo.type.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,18 +66,18 @@ public class OrderPatternDetailServiceImpl implements OrderPatternDetailService 
                 .build();
         orderPatternDetailRepo.save(orderPatternDetail);
 
-        var approvalLink = response.getLinks()
+        var redirectUrl = response.getLinks()
                 .stream()
                 .filter(link -> link.getRel().equals("approve"))
-                .map(PaymentResponse.Link::getHref)
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new RuntimeException("Cannot found approve link"))
+                .getHref();
 
         return OrderPatternDetailResponse.builder()
                 .transactionId(orderPatternDetail.getTransactionId())
                 .status(orderPatternDetail.getStatus())
                 .orderDate(orderPatternDetail.getOrderDate())
-                .approvalLink(approvalLink)
+                .redirectUrl(redirectUrl)
                 .build();
     }
 
@@ -85,7 +86,7 @@ public class OrderPatternDetailServiceImpl implements OrderPatternDetailService 
         request.setIntent(OrderIntent.CAPTURE);
         PayPalOrderRequest.PurchaseUnit purchaseUnit = new PayPalOrderRequest.PurchaseUnit();
         PayPalOrderRequest.PurchaseUnit.PayPalAmount amount = new PayPalOrderRequest.PurchaseUnit.PayPalAmount();
-        amount.setCurrencyCode("USD");
+        amount.setCurrencyCode(CurrencyCode.USD.getValue());
         amount.setValue(String.valueOf(pattern.getPrice()));
         purchaseUnit.setAmount(amount);
         request.setPurchaseUnits(List.of(purchaseUnit));
@@ -95,7 +96,7 @@ public class OrderPatternDetailServiceImpl implements OrderPatternDetailService 
     @Transactional
     @Override
     public String processPayPalOrderDetail(String transactionId) {
-        var response = payPalService.capturePaymentOrder(transactionId);
+        var response = payPalService.capturePayment(transactionId);
         var orderPatternDetail = orderPatternDetailRepo.findByTransactionId(transactionId)
                 .orElseThrow(() -> new RuntimeException("Order not existed"));
         orderPatternDetail.setStatus(OrderStatus.valueOf(response.getStatus()));

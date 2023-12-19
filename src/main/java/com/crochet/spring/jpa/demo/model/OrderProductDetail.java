@@ -8,8 +8,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,7 +22,6 @@ import java.util.Date;
 @Table(name = "order_product_detail")
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 public class OrderProductDetail extends BaseEntity {
     @Column(name = "transaction_id", nullable = false)
     private String transactionId;
