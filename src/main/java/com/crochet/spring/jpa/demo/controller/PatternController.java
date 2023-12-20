@@ -1,6 +1,7 @@
 package com.crochet.spring.jpa.demo.controller;
 
 import com.crochet.spring.jpa.demo.payload.request.PatternRequest;
+import com.crochet.spring.jpa.demo.payload.response.PatternResponse;
 import com.crochet.spring.jpa.demo.service.contact.PatternService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/pattern")
+@RequestMapping("/api/patterns")
 public class PatternController {
     @Autowired
     private PatternService patternService;
@@ -24,6 +25,13 @@ public class PatternController {
     public ResponseEntity<String> create(@RequestPart PatternRequest request,
                                          @RequestPart MultipartFile[] files) {
         var response = patternService.create(request, files);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getById")
+    public ResponseEntity<PatternResponse> getPattern(@RequestParam("customerId") String customerId,
+                                                      @RequestParam("patternId") String patternId) {
+        var response = patternService.getPattern(customerId, patternId);
         return ResponseEntity.ok(response);
     }
 
