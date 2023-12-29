@@ -36,14 +36,14 @@ public class PayPalServiceImpl implements PayPalService {
     public AccessTokenResponse getAccessToken() {
         String uri = "https://api-m.sandbox.paypal.com/v1/oauth2/token";
         var bodyInserters = BodyInserters.fromFormData("grant_type", "client_credentials");
-        var accessTokenResponse = webClientService.invokeApi(uri,
+        var json = webClientService.invokeApi(uri,
                 HttpMethod.POST,
                 bodyInserters,
-                AccessTokenResponse.class,
                 header -> {
                     header.setBasicAuth(userName, password);
                     header.set("Content-Type", "application/x-www-form-urlencoded");
                 }).block();
+        var accessTokenResponse = gson.fromJson(json, AccessTokenResponse.class);
         webClientService.builder()
                 .defaultHeaders(header -> header.setBearerAuth(accessTokenResponse.getAccessToken()));
         return accessTokenResponse;
@@ -56,8 +56,7 @@ public class PayPalServiceImpl implements PayPalService {
         String uri = "https://api-m.sandbox.paypal.com/v2/checkout/orders";
         String paymentResponse = webClientService.invokeApi(uri,
                 HttpMethod.POST,
-                payload,
-                String.class).block();
+                payload).block();
         return paymentResponse;
     }
 
@@ -65,8 +64,7 @@ public class PayPalServiceImpl implements PayPalService {
     public String getOrderDetail(String orderId) {
         String uri = "https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId;
         var response = webClientService.invokeApi(uri,
-                HttpMethod.GET,
-                String.class).block();
+                HttpMethod.GET).block();
         return response;
     }
 
@@ -75,8 +73,7 @@ public class PayPalServiceImpl implements PayPalService {
         String uri = "https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/confirm-payment-source";
         var response = webClientService.invokeApi(uri,
                 HttpMethod.POST,
-                request,
-                String.class).block();
+                request).block();
         return response;
     }
 
@@ -84,8 +81,7 @@ public class PayPalServiceImpl implements PayPalService {
     public String capturePayment(String orderId) {
         String uri = "https://api-m.sandbox.paypal.com/v2/checkout/orders/" + orderId + "/capture";
         var response = webClientService.invokeApi(uri,
-                HttpMethod.POST,
-                String.class).block();
+                HttpMethod.POST).block();
         return response;
     }
 }
