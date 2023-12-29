@@ -4,12 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum OrderStatus {
-    CREATED("CREATED"),
-    SAVED("SAVED"),
-    APPROVED("APPROVED"),
-    VOIDED("VOIDED"),
-    COMPLETED("COMPLETED"),
-    PAYER_ACTION_REQUIRED("PAYER_ACTION_REQUIRED");
+    PENDING("PENDING"),
+    DELIVERED("DELIVERED"),
+    SHIPPED("SHIPPED");
 
     OrderStatus(String value) {
         this.value = value;

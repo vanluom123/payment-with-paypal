@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.payload.dto;
 
-import com.crochet.spring.jpa.demo.type.OrderStatus;
+import com.crochet.spring.jpa.demo.type.PaymentStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,6 +10,6 @@ import java.util.List;
 @Builder
 public class OrderResponseDTO {
     private String id;
-    private OrderStatus status;
+    private PaymentStatus status;
     private List<LinkDTO> links;
 }

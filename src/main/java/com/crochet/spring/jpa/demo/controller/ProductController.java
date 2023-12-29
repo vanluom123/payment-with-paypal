@@ -22,7 +22,7 @@ public class ProductController {
     @Autowired
     private Gson gson;
 
-    @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ApiResponse<ProductResponse>> saveProduct(
             @RequestParam(value = "id", required = false) String id,
             @RequestParam("name") String name,
@@ -37,6 +37,7 @@ public class ProductController {
                 .price(price)
                 .build();
         var result = ApiResponse.<ProductResponse>builder()
+                .success(true)
                 .message("Create product success")
                 .result(productService.saveProduct(request, files))
                 .build();
@@ -46,6 +47,7 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProductResponse>>> getAll() {
         var result = ApiResponse.<List<ProductResponse>>builder()
+                .success(true)
                 .message("Get success")
                 .result(productService.getAll())
                 .build();

@@ -30,8 +30,11 @@ public class ProductServiceImpl implements ProductService {
         Product product;
         if (request.getId() == null) {
             // Create product
-            product = Product.builder().name(request.getName()).price(request.getPrice())
-                    .description(request.getDescription()).files(convertMultipartFileToString(files)).build();
+            product = Product.builder()
+                    .name(request.getName())
+                    .price(request.getPrice())
+                    .description(request.getDescription())
+                    .files(convertMultipartFileToString(files)).build();
         } else {
             // Update product
             product = productRepo.findById(UUID.fromString(request.getId()))

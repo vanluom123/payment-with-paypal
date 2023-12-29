@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.model;
 
-import com.crochet.spring.jpa.demo.type.OrderProductStatus;
+import com.crochet.spring.jpa.demo.type.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,12 +20,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderProduct extends BaseEntity {
-    @Column(name = "transaction_id", nullable = false)
-    private String transactionId;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "VARCHAR(25) DEFAULT 'PENDING' NOT NULL")
-    private OrderProductStatus status;
+    private OrderStatus status;
 
     @Column(name = "total_amount", columnDefinition = "DOUBLE DEFAULT 0 NOT NULL")
     private Double totalAmount;
@@ -41,4 +38,7 @@ public class OrderProduct extends BaseEntity {
 
     @OneToMany(mappedBy = "orderProduct", cascade = CascadeType.ALL)
     private List<OrderProductDetail> orderProductDetails;
+
+    @OneToMany(mappedBy = "orderProduct", cascade = CascadeType.ALL)
+    private List<Payment> payments;
 }
