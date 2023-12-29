@@ -1,13 +1,6 @@
 package com.crochet.spring.jpa.demo.model;
 
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,8 +25,11 @@ public class Product extends BaseEntity {
     @Column(name = "description", columnDefinition = "LONGBLOB")
     private String description;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<OrderProductDetail> orderProductDetails;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Cart> carts;
 
     @ElementCollection
     @CollectionTable(name = "file_modal",

@@ -1,10 +1,6 @@
 package com.crochet.spring.jpa.demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +16,6 @@ import java.util.UUID;
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", columnDefinition = "binary(16) default (uuid_to_bin(uuid()))", nullable = false)
     protected UUID id;
 }

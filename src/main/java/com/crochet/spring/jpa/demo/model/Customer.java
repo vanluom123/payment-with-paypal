@@ -1,13 +1,7 @@
 package com.crochet.spring.jpa.demo.model;
 
 import com.crochet.spring.jpa.demo.type.RoleType;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,11 +40,17 @@ public class Customer extends BaseEntity {
     private boolean enabled;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", columnDefinition = "varchar(5) DEFAULT 'USER'")
+    @Column(name = "role", columnDefinition = "VARCHAR(5) DEFAULT 'USER'")
     private RoleType role = RoleType.USER;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Order> orders;
+    private List<OrderPattern> orderPatterns;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<OrderProduct> orderProducts;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Cart> carts;
 
     @Override
     public final boolean equals(Object o) {

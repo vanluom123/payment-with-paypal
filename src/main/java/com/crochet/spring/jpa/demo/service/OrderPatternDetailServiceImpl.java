@@ -1,13 +1,8 @@
 package com.crochet.spring.jpa.demo.service;
 
-import com.crochet.spring.jpa.demo.model.Order;
+import com.crochet.spring.jpa.demo.model.OrderPattern;
 import com.crochet.spring.jpa.demo.model.OrderPatternDetail;
-import com.crochet.spring.jpa.demo.payload.dto.CapturePaymentResponseDTO;
-import com.crochet.spring.jpa.demo.payload.dto.MoneyDTO;
-import com.crochet.spring.jpa.demo.payload.dto.OrderDTO;
-import com.crochet.spring.jpa.demo.payload.dto.OrderResponseDTO;
-import com.crochet.spring.jpa.demo.payload.dto.PayPalAppContextDTO;
-import com.crochet.spring.jpa.demo.payload.dto.PurchaseUnit;
+import com.crochet.spring.jpa.demo.payload.dto.*;
 import com.crochet.spring.jpa.demo.repository.CustomerRepository;
 import com.crochet.spring.jpa.demo.repository.OrderPatternDetailRepo;
 import com.crochet.spring.jpa.demo.repository.OrderRepository;
@@ -66,13 +61,13 @@ public class OrderPatternDetailServiceImpl implements OrderPatternDetailService 
         var content = payPalService.createOrder(orderDTO);
         var orderResponseDTO = gson.fromJson(content, OrderResponseDTO.class);
 
-        var order = Order.builder()
+        var order = OrderPattern.builder()
                 .customer(customer)
                 .build();
         order = orderRepo.save(order);
 
         var orderPatternDetail = OrderPatternDetail.builder()
-                .order(order)
+                .orderPattern(order)
                 .pattern(pattern)
                 .transactionId(orderResponseDTO.getId())
                 .status(orderResponseDTO.getStatus())

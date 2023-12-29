@@ -3,14 +3,7 @@ package com.crochet.spring.jpa.demo.mapper;
 import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.payload.request.CustomerRequest;
 import com.crochet.spring.jpa.demo.payload.response.CustomerResponse;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.Collection;
@@ -38,6 +31,6 @@ public interface CustomerMapper {
 
     @AfterMapping
     default void linkOrders(@MappingTarget Customer customer) {
-        customer.getOrders().forEach(order -> order.setCustomer(customer));
+        customer.getOrderPatterns().forEach(order -> order.setCustomer(customer));
     }
 }

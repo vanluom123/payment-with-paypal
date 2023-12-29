@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface PatternRepo extends JpaRepository<Pattern, UUID> {
     @Query("select p from Pattern p " +
             "join fetch p.orderPatternDetails opd " +
-            "join fetch opd.order o " +
+            "join fetch opd.orderPattern o " +
             "join fetch o.customer c " +
             "where p.id = ?2 and c.id = ?1 and opd.status = 'COMPLETED'")
     Optional<Pattern> findCompletedPatterns(UUID customerId, UUID patternId);

@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -29,12 +30,8 @@ public class ProductServiceImpl implements ProductService {
         Product product;
         if (request.getId() == null) {
             // Create product
-            product = Product.builder()
-                    .name(request.getName())
-                    .price(request.getPrice())
-                    .description(request.getDescription())
-                    .files(convertMultipartFileToString(files))
-                    .build();
+            product = Product.builder().name(request.getName()).price(request.getPrice())
+                    .description(request.getDescription()).files(convertMultipartFileToString(files)).build();
         } else {
             // Update product
             product = productRepo.findById(UUID.fromString(request.getId()))
@@ -51,6 +48,9 @@ public class ProductServiceImpl implements ProductService {
     @SneakyThrows
     private List<String> convertMultipartFileToString(MultipartFile[] files) {
         List<String> urls = new ArrayList<>();
+        if (ObjectUtils.isEmpty(files)) {
+            return null;
+        }
         for (var file : files) {
             urls.add(Base64.getEncoder().encodeToString(file.getBytes()));
         }
