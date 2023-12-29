@@ -23,3 +23,6 @@ spring:
   mvc:
     converters:
       preferred-json-mapper: gson
+
+ghtk:
+  token: b542a4aa3378e416b4cd033184594e81cfb38063
