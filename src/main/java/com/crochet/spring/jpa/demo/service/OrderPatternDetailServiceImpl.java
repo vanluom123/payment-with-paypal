@@ -2,7 +2,7 @@ package com.crochet.spring.jpa.demo.service;
 
 import com.crochet.spring.jpa.demo.model.OrderPattern;
 import com.crochet.spring.jpa.demo.model.OrderPatternDetail;
-import com.crochet.spring.jpa.demo.payload.dto.*;
+import com.crochet.spring.jpa.demo.payload.dto.paypal.*;
 import com.crochet.spring.jpa.demo.repository.CustomerRepo;
 import com.crochet.spring.jpa.demo.repository.OrderPatternDetailRepo;
 import com.crochet.spring.jpa.demo.repository.OrderPatternRepo;

@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo;
+package com.crochet.spring.jpa.demo.repository;
 
 import com.crochet.spring.jpa.demo.model.OrderProductDetail;
 import org.springframework.data.jpa.repository.JpaRepository;

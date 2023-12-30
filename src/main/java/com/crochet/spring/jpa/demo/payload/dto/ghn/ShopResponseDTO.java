@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.dto.ghtk;
+package com.crochet.spring.jpa.demo.payload.dto.ghn;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -8,15 +8,15 @@ import lombok.Data;
 
 @Data
 @Builder
-public class GHTKCreateOrderResponse {
-    @SerializedName("success")
+public class ShopResponseDTO {
+    @SerializedName("code")
     @Expose
-    public boolean success;
+    public long code;
     @SerializedName("message")
     @Expose
     public String message;
-    @SerializedName("order")
+    @SerializedName("data")
     @Expose
     @Valid
-    public GHTKOrder order;
+    public DataDTO data;
 }

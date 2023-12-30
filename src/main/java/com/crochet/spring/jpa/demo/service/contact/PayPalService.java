@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.service.contact;
 
-import com.crochet.spring.jpa.demo.payload.dto.OrderDTO;
+import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderDTO;
 import com.crochet.spring.jpa.demo.payload.response.AccessTokenResponse;
 
 public interface PayPalService {

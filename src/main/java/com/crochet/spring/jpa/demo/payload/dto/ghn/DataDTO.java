@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.dto.ghtk;
+package com.crochet.spring.jpa.demo.payload.dto.ghn;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,13 +10,13 @@ import java.util.List;
 
 @Data
 @Builder
-public class GHTKCreateOrder {
-    @SerializedName("products")
+public class DataDTO {
+    @SerializedName("last_offset")
+    @Expose
+    public long lastOffset;
+    @SerializedName("shops")
     @Expose
     @Valid
-    public List<GHTKProduct> products;
-    @SerializedName("order")
-    @Expose
-    @Valid
-    public GHTKOrder order;
+    public List<ShopDTO> shops;
+
 }

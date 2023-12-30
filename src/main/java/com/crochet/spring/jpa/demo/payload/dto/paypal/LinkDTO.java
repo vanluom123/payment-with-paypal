@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.dto;
+package com.crochet.spring.jpa.demo.payload.dto.paypal;
 
 import lombok.Data;
 

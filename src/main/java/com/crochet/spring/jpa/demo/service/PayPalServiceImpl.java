@@ -1,12 +1,13 @@
 package com.crochet.spring.jpa.demo.service;
 
-import com.crochet.spring.jpa.demo.payload.dto.OrderDTO;
+import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderDTO;
 import com.crochet.spring.jpa.demo.payload.response.AccessTokenResponse;
+import com.crochet.spring.jpa.demo.properties.PayPalProperties;
 import com.crochet.spring.jpa.demo.service.contact.PayPalService;
 import com.google.gson.Gson;
+import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.xiaofeng.webclient.service.WebClientService;
@@ -14,22 +15,20 @@ import org.xiaofeng.webclient.type.HttpMethod;
 
 @Service
 public class PayPalServiceImpl implements PayPalService {
-    private final String userName = "AYw-XWRSOe3r11W37cF26rxf3tUBn8X1dPala2Lux2cGHbK6NYMiyYB_2SES46YjIx1a9zLuMSHSJpYD";
-    private final String password = "EENLA_G2RtWbTYgY6i90ApZkYdctBuY2AcgnsHhct0sbCnwWiM_J55NTmmEsLbiDcNpnLEfBWPneTmwF";
-
-    private final WebClientService webClientService;
-
+    @Autowired
+    private WebClientService webClientService;
     @Autowired
     private Gson gson;
-
     @Autowired
-    public PayPalServiceImpl(WebClientService webClientService) {
+    private PayPalProperties paypalProps;
+
+    @PostConstruct
+    public void init() {
         webClientService.builder()
-                .defaultHeaders(header -> {
-                    header.setBasicAuth(userName, password);
-                    header.setContentType(MediaType.APPLICATION_JSON);
-                });
-        this.webClientService = webClientService;
+                .defaultHeaders(header -> header.setBasicAuth(
+                        paypalProps.getUsername(),
+                        paypalProps.getPassword()
+                ));
     }
 
     @Override
@@ -39,10 +38,7 @@ public class PayPalServiceImpl implements PayPalService {
         var json = webClientService.invokeApi(uri,
                 HttpMethod.POST,
                 bodyInserters,
-                header -> {
-                    header.setBasicAuth(userName, password);
-                    header.set("Content-Type", "application/x-www-form-urlencoded");
-                }).block();
+                header -> header.set("Content-Type", "application/x-www-form-urlencoded")).block();
         var accessTokenResponse = gson.fromJson(json, AccessTokenResponse.class);
         webClientService.builder()
                 .defaultHeaders(header -> header.setBearerAuth(accessTokenResponse.getAccessToken()));
