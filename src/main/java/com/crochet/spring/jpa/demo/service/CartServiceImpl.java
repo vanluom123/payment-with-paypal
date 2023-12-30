@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -68,24 +67,21 @@ public class CartServiceImpl implements CartService {
                 .build();
         orderProduct = orderProductRepo.save(orderProduct);
         // do du lieu tu cart vao order detail
-        List<OrderProductDetail> orderProdDetails = new ArrayList<>();
-        for (var prod : products) {
-            var cart = getCartFromCusAndProd(customer, prod);
+        List<Cart> carts = cartRepo.findCartByCus(customer);
+        for (var cart : carts) {
             var orderProdDetail = OrderProductDetail.builder()
                     .orderProduct(orderProduct)
-                    .product(prod)
+                    .product(cart.getProduct())
                     .quantity(cart.getQuantity())
                     .build();
-            orderProdDetails.add(orderProdDetail);
-            // Xoa du lieu trong cart
-            cartRepo.deleteCartByCustomerId(customer, prod);
+            orderProductDetailRepo.save(orderProdDetail);
+            cartRepo.deleteCartByCustomerId(customer, cart.getProduct());
         }
-        orderProductDetailRepo.saveAll(orderProdDetails);
         return "Order success";
     }
 
     public Cart getCartFromCusAndProd(Customer cus, Product prod) {
-        return cartRepo.findCartByCustomer(cus, prod)
+        return cartRepo.findCartByCusAndProd(cus, prod)
                 .orElseThrow(() -> new RuntimeException(
                         String.format("Cannot found cart from customer %s and product %s", cus.getId(), prod.getId())));
     }

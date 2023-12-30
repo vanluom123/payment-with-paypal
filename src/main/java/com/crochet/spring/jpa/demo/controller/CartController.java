@@ -30,7 +30,7 @@ public class CartController {
 
     @PostMapping("/placeOrder")
     public ResponseEntity<String> placeOrder(@RequestParam("customer_id") String cusId) {
-        var result = cartService.placeOrder_2(cusId);
+        var result = cartService.placeOrder(cusId);
         return ResponseEntity.ok(result);
     }
 }
