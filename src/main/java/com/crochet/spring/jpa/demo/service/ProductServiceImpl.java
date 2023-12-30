@@ -4,7 +4,7 @@ import com.crochet.spring.jpa.demo.mapper.ProductMapper;
 import com.crochet.spring.jpa.demo.model.Product;
 import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
 import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
-import com.crochet.spring.jpa.demo.repository.ProductRepository;
+import com.crochet.spring.jpa.demo.repository.ProductRepo;
 import com.crochet.spring.jpa.demo.service.contact.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
@@ -22,7 +22,7 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductRepository productRepo;
+    private ProductRepo productRepo;
 
     @Transactional
     @Override

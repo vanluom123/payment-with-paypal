@@ -3,9 +3,9 @@ package com.crochet.spring.jpa.demo.service;
 import com.crochet.spring.jpa.demo.model.OrderPattern;
 import com.crochet.spring.jpa.demo.model.OrderPatternDetail;
 import com.crochet.spring.jpa.demo.payload.dto.*;
-import com.crochet.spring.jpa.demo.repository.CustomerRepository;
+import com.crochet.spring.jpa.demo.repository.CustomerRepo;
 import com.crochet.spring.jpa.demo.repository.OrderPatternDetailRepo;
-import com.crochet.spring.jpa.demo.repository.OrderRepository;
+import com.crochet.spring.jpa.demo.repository.OrderPatternRepo;
 import com.crochet.spring.jpa.demo.repository.PatternRepo;
 import com.crochet.spring.jpa.demo.service.contact.OrderPatternDetailService;
 import com.crochet.spring.jpa.demo.service.contact.PayPalService;
@@ -30,13 +30,13 @@ public class OrderPatternDetailServiceImpl implements OrderPatternDetailService 
     private OrderPatternDetailRepo orderPatternDetailRepo;
 
     @Autowired
-    private OrderRepository orderRepo;
+    private OrderPatternRepo orderRepo;
 
     @Autowired
     private PatternRepo patternRepo;
 
     @Autowired
-    private CustomerRepository customerRepo;
+    private CustomerRepo customerRepo;
 
     @Autowired
     private PayPalService payPalService;
