@@ -9,8 +9,4 @@ import org.springframework.stereotype.Service;
 public class OrderProductServiceImpl implements OrderProductService {
     @Autowired
     private OrderProductRepo orderProductRepo;
-
-    public String addProductToCart(String customerId, String productId) {
-        return "Added to cart";
-    }
 }

@@ -1,15 +1,7 @@
 package com.crochet.spring.jpa.demo.model;
 
-import com.crochet.spring.jpa.demo.type.CurrencyCode;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.crochet.spring.jpa.demo.type.paypal.CurrencyCode;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

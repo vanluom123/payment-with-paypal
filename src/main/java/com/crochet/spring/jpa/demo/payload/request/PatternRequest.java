@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.payload.request;
 
-import com.crochet.spring.jpa.demo.type.CurrencyCode;
+import com.crochet.spring.jpa.demo.type.paypal.CurrencyCode;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;

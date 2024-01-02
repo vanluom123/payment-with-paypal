@@ -9,8 +9,8 @@ import com.crochet.spring.jpa.demo.repository.OrderPatternRepo;
 import com.crochet.spring.jpa.demo.repository.PatternRepo;
 import com.crochet.spring.jpa.demo.service.contact.OrderPatternDetailService;
 import com.crochet.spring.jpa.demo.service.contact.PayPalService;
-import com.crochet.spring.jpa.demo.type.OrderIntent;
-import com.crochet.spring.jpa.demo.type.PaymentLandingPage;
+import com.crochet.spring.jpa.demo.type.paypal.OrderIntent;
+import com.crochet.spring.jpa.demo.type.paypal.PaymentLandingPage;
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +28,14 @@ import java.util.UUID;
 public class OrderPatternDetailServiceImpl implements OrderPatternDetailService {
     @Autowired
     private OrderPatternDetailRepo orderPatternDetailRepo;
-
     @Autowired
     private OrderPatternRepo orderRepo;
-
     @Autowired
     private PatternRepo patternRepo;
-
     @Autowired
     private CustomerRepo customerRepo;
-
     @Autowired
     private PayPalService payPalService;
-
     @Autowired
     private Gson gson;
 

@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.payload.dto.paypal;
 
-import com.crochet.spring.jpa.demo.type.PaymentLandingPage;
+import com.crochet.spring.jpa.demo.type.paypal.PaymentLandingPage;
 import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Data;

@@ -9,6 +9,7 @@ import com.crochet.spring.jpa.demo.service.contact.CartService;
 import com.crochet.spring.jpa.demo.type.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.time.Instant;
@@ -39,6 +40,7 @@ public class CartServiceImpl implements CartService {
         return "Order success";
     }
 
+    @Transactional
     @Override
     public String placeOrder(String customerId) {
         // Kiem tra customer co ton tai khong

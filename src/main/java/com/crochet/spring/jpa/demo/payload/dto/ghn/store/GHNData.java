@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.dto.ghn;
+package com.crochet.spring.jpa.demo.payload.dto.ghn.store;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,13 +10,12 @@ import java.util.List;
 
 @Data
 @Builder
-public class DataDTO {
+public class GHNData {
     @SerializedName("last_offset")
     @Expose
     public long lastOffset;
     @SerializedName("shops")
     @Expose
     @Valid
-    public List<ShopDTO> shops;
-
+    public List<GHNShop> shops;
 }

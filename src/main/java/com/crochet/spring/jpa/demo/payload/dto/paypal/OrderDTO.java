@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.payload.dto.paypal;
 
-import com.crochet.spring.jpa.demo.type.OrderIntent;
+import com.crochet.spring.jpa.demo.type.paypal.OrderIntent;
 import com.google.gson.annotations.SerializedName;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

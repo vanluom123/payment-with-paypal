@@ -1,11 +1,13 @@
-package com.crochet.spring.jpa.demo.payload.dto.ghn;
+package com.crochet.spring.jpa.demo.payload.dto.ghn.store;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class GetShopsRequestDTO {
+@AllArgsConstructor
+public class GHNGetShopsRequest {
     @SerializedName("offset")
     @Expose
     public long offset;

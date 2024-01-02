@@ -21,7 +21,6 @@ import java.util.UUID;
 public class PatternServiceImpl implements PatternService {
     @Autowired
     private PatternRepo patternRepo;
-
     @Autowired
     private OrderPatternDetailRepo orderPatternDetailRepo;
 

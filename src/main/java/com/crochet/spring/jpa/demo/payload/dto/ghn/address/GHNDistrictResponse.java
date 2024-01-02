@@ -1,14 +1,14 @@
-package com.crochet.spring.jpa.demo.payload.dto.ghn;
+package com.crochet.spring.jpa.demo.payload.dto.ghn.address;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import jakarta.validation.Valid;
-import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-@Builder
-public class ShopResponseDTO {
+public class GHNDistrictResponse {
     @SerializedName("code")
     @Expose
     public long code;
@@ -18,5 +18,5 @@ public class ShopResponseDTO {
     @SerializedName("data")
     @Expose
     @Valid
-    public DataDTO data;
+    public List<GHNDistrict> data;
 }

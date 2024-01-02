@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.model;
 
-import com.crochet.spring.jpa.demo.type.PaymentStatus;
+import com.crochet.spring.jpa.demo.type.paypal.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.type;
+package com.crochet.spring.jpa.demo.type.paypal;
 
 import lombok.Getter;
 
