@@ -1,9 +1,9 @@
-package com.crochet.spring.jpa.demo.service;
+package com.crochet.spring.jpa.demo.service.impl;
 
 import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderDTO;
 import com.crochet.spring.jpa.demo.payload.response.AccessTokenResponse;
 import com.crochet.spring.jpa.demo.properties.PayPalProperties;
-import com.crochet.spring.jpa.demo.service.contact.PayPalService;
+import com.crochet.spring.jpa.demo.service.PayPalService;
 import com.google.gson.Gson;
 import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;

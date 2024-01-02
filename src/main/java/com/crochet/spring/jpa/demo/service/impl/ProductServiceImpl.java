@@ -1,11 +1,11 @@
-package com.crochet.spring.jpa.demo.service;
+package com.crochet.spring.jpa.demo.service.impl;
 
 import com.crochet.spring.jpa.demo.mapper.ProductMapper;
 import com.crochet.spring.jpa.demo.model.Product;
 import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
 import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
 import com.crochet.spring.jpa.demo.repository.ProductRepo;
-import com.crochet.spring.jpa.demo.service.contact.ProductService;
+import com.crochet.spring.jpa.demo.service.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -36,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
                     .files(convertMultipartFileToString(files)).build();
         } else {
             // Update product
-            product = productRepo.findById(UUID.fromString(request.getId()))
+            product = productRepo.findById(request.getId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
             product.setName(request.getName());
             product.setDescription(request.getDescription());

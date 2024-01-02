@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.service;
+package com.crochet.spring.jpa.demo.service.impl;
 
 import com.crochet.spring.jpa.demo.mapper.PatternMapper;
 import com.crochet.spring.jpa.demo.model.Pattern;
@@ -6,7 +6,7 @@ import com.crochet.spring.jpa.demo.payload.request.PatternRequest;
 import com.crochet.spring.jpa.demo.payload.response.PatternResponse;
 import com.crochet.spring.jpa.demo.repository.OrderPatternDetailRepo;
 import com.crochet.spring.jpa.demo.repository.PatternRepo;
-import com.crochet.spring.jpa.demo.service.contact.PatternService;
+import com.crochet.spring.jpa.demo.service.PatternService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,22 +46,21 @@ public class PatternServiceImpl implements PatternService {
     }
 
     @Override
-    public byte[] getFirsFileByPattern(String patternId) {
+    public byte[] getFirsFileByPattern(UUID patternId) {
         var pattern = getById(patternId);
         var fileUrl = pattern.getFiles().getFirst();
         return Base64.getDecoder().decode(fileUrl.getBytes());
     }
 
-    private Pattern getById(String patternId) {
-        var pattern = patternRepo.findById(UUID.fromString(patternId))
+    private Pattern getById(UUID patternId) {
+        var pattern = patternRepo.findById(patternId)
                 .orElseThrow(() -> new RuntimeException("Pattern not found"));
         return pattern;
     }
 
     @Override
-    public PatternResponse getPattern(String customerId, String patternId) {
-        var pattern = patternRepo.findCompletedPatterns(UUID.fromString(customerId),
-                        UUID.fromString(patternId))
+    public PatternResponse getPattern(UUID customerId, UUID patternId) {
+        var pattern = patternRepo.findCompletedPatterns(customerId, patternId)
                 .orElseThrow(() -> new RuntimeException("Pattern not ordered"));
         return PatternMapper.INSTANCE.toResponse(pattern);
     }

@@ -1,9 +1,11 @@
-package com.crochet.spring.jpa.demo.service.contact;
+package com.crochet.spring.jpa.demo.service;
 
 import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderResponseDTO;
 
+import java.util.UUID;
+
 public interface OrderPatternDetailService {
-    OrderResponseDTO createPayment(String customerId, String patternId);
+    OrderResponseDTO createPayment(UUID customerId, UUID patternId);
 
     String processPayPalOrderDetail(String transactionId);
 }

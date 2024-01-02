@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.service.contact;
+package com.crochet.spring.jpa.demo.service;
 
 import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderDTO;
 import com.crochet.spring.jpa.demo.payload.response.AccessTokenResponse;

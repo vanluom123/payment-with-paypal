@@ -1,11 +1,11 @@
-package com.crochet.spring.jpa.demo.service;
+package com.crochet.spring.jpa.demo.service.impl;
 
 import com.crochet.spring.jpa.demo.model.*;
 import com.crochet.spring.jpa.demo.repository.CartRepo;
 import com.crochet.spring.jpa.demo.repository.CustomerRepo;
 import com.crochet.spring.jpa.demo.repository.OrderProductDetailRepo;
 import com.crochet.spring.jpa.demo.repository.OrderProductRepo;
-import com.crochet.spring.jpa.demo.service.contact.CartService;
+import com.crochet.spring.jpa.demo.service.CartService;
 import com.crochet.spring.jpa.demo.type.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -47,19 +48,18 @@ public class CartServiceImpl implements CartService {
         UUID cusUUID = UUID.fromString(customerId);
         var customer = customerRepo.findById(cusUUID)
                 .orElseThrow(() -> new RuntimeException("Customer not existed"));
-        // Lay product tu cart
-        var products = cartRepo.findProductFromCartByCustomerId(customer);
-        if (ObjectUtils.isEmpty(products)) {
-            throw new RuntimeException("Cannot any product existed in cart");
+
+        // Lay danh sach cart theo customer
+        List<Cart> carts = cartRepo.findAllCartByCustomer(customer);
+        if (ObjectUtils.isEmpty(carts)) {
+            throw new RuntimeException("Cart not existed");
         }
+
         // Lay amount nhan cho quantity roi cong lai
-        double totalAmount = products.stream()
-                .map(p -> {
-                    // Lay cart cua customer ra de lay quantity cua product trong cart
-                    var cart = getCartFromCusAndProd(customer, p);
-                    return p.getPrice() * cart.getQuantity();
-                })
-                .reduce(0.0, Double::sum);
+        double totalAmount = carts.stream()
+                .mapToDouble(cart -> cart.getProduct().getPrice() * cart.getQuantity())
+                .sum();
+
         // tao order
         OrderProduct orderProduct = OrderProduct.builder()
                 .customer(customer)
@@ -68,22 +68,22 @@ public class CartServiceImpl implements CartService {
                 .totalAmount(totalAmount)
                 .build();
         orderProduct = orderProductRepo.save(orderProduct);
-        // do du lieu tu cart vao order detail
-        List<Cart> carts = cartRepo.findCartByCus(customer);
-        for (var cart : carts) {
-            var orderProdDetail = OrderProductDetail.builder()
-                    .orderProduct(orderProduct)
-                    .product(cart.getProduct())
-                    .quantity(cart.getQuantity())
-                    .build();
-            orderProductDetailRepo.save(orderProdDetail);
-            cartRepo.deleteCartByCustomerId(customer, cart.getProduct());
-        }
+
+        OrderProduct finalOrderProduct = orderProduct;
+        List<OrderProductDetail> orderDetails = carts.stream()
+                .map(cart -> OrderProductDetail.builder()
+                        .orderProduct(finalOrderProduct)
+                        .product(cart.getProduct())
+                        .quantity(cart.getQuantity())
+                        .build())
+                .collect(Collectors.toList());
+        orderProductDetailRepo.saveAll(orderDetails);
+        cartRepo.deleteAll(carts);
         return "Order success";
     }
 
     public Cart getCartFromCusAndProd(Customer cus, Product prod) {
-        return cartRepo.findCartByCusAndProd(cus, prod)
+        return cartRepo.findCartByCustomerAndProduct(cus, prod)
                 .orElseThrow(() -> new RuntimeException(
                         String.format("Cannot found cart from customer %s and product %s", cus.getId(), prod.getId())));
     }

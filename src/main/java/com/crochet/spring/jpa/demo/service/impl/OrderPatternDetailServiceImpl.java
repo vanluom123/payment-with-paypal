@@ -1,14 +1,19 @@
-package com.crochet.spring.jpa.demo.service;
+package com.crochet.spring.jpa.demo.service.impl;
 
 import com.crochet.spring.jpa.demo.model.OrderPattern;
 import com.crochet.spring.jpa.demo.model.OrderPatternDetail;
-import com.crochet.spring.jpa.demo.payload.dto.paypal.*;
+import com.crochet.spring.jpa.demo.payload.dto.paypal.CapturePaymentResponseDTO;
+import com.crochet.spring.jpa.demo.payload.dto.paypal.MoneyDTO;
+import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderDTO;
+import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderResponseDTO;
+import com.crochet.spring.jpa.demo.payload.dto.paypal.PayPalAppContextDTO;
+import com.crochet.spring.jpa.demo.payload.dto.paypal.PurchaseUnit;
 import com.crochet.spring.jpa.demo.repository.CustomerRepo;
 import com.crochet.spring.jpa.demo.repository.OrderPatternDetailRepo;
 import com.crochet.spring.jpa.demo.repository.OrderPatternRepo;
 import com.crochet.spring.jpa.demo.repository.PatternRepo;
-import com.crochet.spring.jpa.demo.service.contact.OrderPatternDetailService;
-import com.crochet.spring.jpa.demo.service.contact.PayPalService;
+import com.crochet.spring.jpa.demo.service.OrderPatternDetailService;
+import com.crochet.spring.jpa.demo.service.PayPalService;
 import com.crochet.spring.jpa.demo.type.paypal.OrderIntent;
 import com.crochet.spring.jpa.demo.type.paypal.PaymentLandingPage;
 import com.google.gson.Gson;
@@ -42,12 +47,12 @@ public class OrderPatternDetailServiceImpl implements OrderPatternDetailService 
     @SneakyThrows
     @Transactional
     @Override
-    public OrderResponseDTO createPayment(String customerId,
-                                          String patternId) {
-        var customer = customerRepo.findById(UUID.fromString(customerId))
+    public OrderResponseDTO createPayment(UUID customerId,
+                                          UUID patternId) {
+        var customer = customerRepo.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        var pattern = patternRepo.findById(UUID.fromString(patternId))
+        var pattern = patternRepo.findById(patternId)
                 .orElseThrow(() -> new RuntimeException("Pattern not found"));
 
         var orderDTO = createOrderDTO(pattern.getCurrencyCode().getValue(),
