@@ -3,7 +3,7 @@ package com.crochet.spring.jpa.demo.controller;
 import com.crochet.spring.jpa.demo.payload.request.CustomerRequest;
 import com.crochet.spring.jpa.demo.payload.response.ApiResponse;
 import com.crochet.spring.jpa.demo.payload.response.CustomerResponse;
-import com.crochet.spring.jpa.demo.service.contact.CustomerService;
+import com.crochet.spring.jpa.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -25,6 +25,18 @@ public class Product extends BaseEntity {
     @Column(name = "description", columnDefinition = "LONGBLOB")
     private String description;
 
+    @Column(name = "length")
+    private long length;
+
+    @Column(name = "weight")
+    private long weight;
+
+    @Column(name = "width")
+    private long width;
+
+    @Column(name = "height")
+    private long height;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<OrderProductDetail> orderProductDetails;
 

@@ -27,7 +27,7 @@ public interface CartRepo extends JpaRepository<Cart, UUID> {
     @Query("select c.product from Cart c" +
             " inner join c.product p on c.product.id = p.id" +
             " where c.customer = ?1")
-    List<Product> findProductFromCartByCustomerId(Customer customer);
+    List<Product> findProductFromCartByCustomer(Customer customer);
 
     @Transactional
     @Modifying
@@ -35,8 +35,8 @@ public interface CartRepo extends JpaRepository<Cart, UUID> {
     void deleteCartByCustomerId(Customer cus, Product prod);
 
     @Query("select c from Cart c where c.customer = ?1 and c.product = ?2")
-    Optional<Cart> findCartByCusAndProd(Customer customer, Product product);
+    Optional<Cart> findCartByCustomerAndProduct(Customer customer, Product product);
 
     @Query("select c from Cart c where c.customer = ?1")
-    List<Cart> findCartByCus(Customer cus);
+    List<Cart> findAllCartByCustomer(Customer cus);
 }
