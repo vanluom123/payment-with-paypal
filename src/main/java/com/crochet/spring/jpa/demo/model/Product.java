@@ -1,6 +1,16 @@
 package com.crochet.spring.jpa.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,22 +36,26 @@ public class Product extends BaseEntity {
     private String description;
 
     @Column(name = "length")
-    private long length;
+    private int length;
 
     @Column(name = "weight")
-    private long weight;
+    private int weight;
 
     @Column(name = "width")
-    private long width;
+    private int width;
 
     @Column(name = "height")
-    private long height;
+    private int height;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<OrderProductDetail> orderProductDetails;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Cart> carts;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", columnDefinition = "BINARY(16) NOT NULL")
+    private Category category;
 
     @ElementCollection
     @CollectionTable(name = "file_modal",
