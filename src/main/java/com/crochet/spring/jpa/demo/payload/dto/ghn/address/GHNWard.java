@@ -13,7 +13,7 @@ public class GHNWard {
     public long wardCode;
     @SerializedName("DistrictID")
     @Expose
-    public long districtID;
+    public int districtID;
     @SerializedName("WardName")
     @Expose
     public String wardName;

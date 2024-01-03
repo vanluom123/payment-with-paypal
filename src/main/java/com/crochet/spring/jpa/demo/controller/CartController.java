@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
@@ -20,8 +22,8 @@ public class CartController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addCart(
-            @RequestParam("customer_id") String customerId,
-            @RequestParam("product_id") String productId,
+            @RequestParam("customer_id") UUID customerId,
+            @RequestParam("product_id") UUID productId,
             @RequestParam("quantity") int quantity
     ) {
         var result = cartService.addProductToCart(customerId, productId, quantity);
@@ -29,7 +31,7 @@ public class CartController {
     }
 
     @PostMapping("/placeOrder")
-    public ResponseEntity<String> placeOrder(@RequestParam("customer_id") String cusId) {
+    public ResponseEntity<String> placeOrder(@RequestParam("customer_id") UUID cusId) {
         var result = cartService.placeOrder(cusId);
         return ResponseEntity.ok(result);
     }

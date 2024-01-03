@@ -1,9 +1,11 @@
 package com.crochet.spring.jpa.demo.service;
 
+import java.util.UUID;
+
 public interface CartService {
-    String addProductToCart(String customerId, String productId, int quantity);
+    String addProductToCart(UUID customerId, UUID productId, int quantity);
 
-    String placeOrder_2(String cusId);
+    String placeOrder_2(UUID cusId);
 
-    String placeOrder(String customerId);
+    String placeOrder(UUID customerId);
 }

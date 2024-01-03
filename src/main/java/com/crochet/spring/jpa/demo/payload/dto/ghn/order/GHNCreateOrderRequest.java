@@ -1,18 +1,21 @@
 package com.crochet.spring.jpa.demo.payload.dto.ghn.order;
 
+import com.crochet.spring.jpa.demo.common.AppConstant;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
 @Data
-@Accessors(fluent = true)
+@Builder
 public class GHNCreateOrderRequest {
     @SerializedName("payment_type_id")
     @Expose
-    public long paymentTypeId = 2;
+    public int paymentTypeId = AppConstant.BUYER_PAYMENT;
 
     @SerializedName("note")
     @Expose
@@ -20,6 +23,7 @@ public class GHNCreateOrderRequest {
 
     @SerializedName("required_note")
     @Expose
+    @Enumerated(EnumType.STRING)
     public String requiredNote = "CHOTHUHANG";
 
     @SerializedName("from_name")
@@ -64,7 +68,7 @@ public class GHNCreateOrderRequest {
 
     @SerializedName("to_district_id")
     @Expose
-    public long toDistrictId;
+    public int toDistrictId;
 
     @SerializedName("content")
     @Expose
@@ -72,27 +76,27 @@ public class GHNCreateOrderRequest {
 
     @SerializedName("weight")
     @Expose
-    public long weight;
+    public int weight;
 
     @SerializedName("length")
     @Expose
-    public long length;
+    public int length;
 
     @SerializedName("width")
     @Expose
-    public long width;
+    public int width;
 
     @SerializedName("height")
     @Expose
-    public long height;
+    public int height;
 
     @SerializedName("service_id")
     @Expose
-    public long serviceId = 0;
+    public int serviceId = 0;
 
     @SerializedName("service_type_id")
     @Expose
-    public long serviceTypeId = 2;
+    public int serviceTypeId = AppConstant.ECOMMERCE_DELIVERY;
 
     @SerializedName("items")
     @Expose

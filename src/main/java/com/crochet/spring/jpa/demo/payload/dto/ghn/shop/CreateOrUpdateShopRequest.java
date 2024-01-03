@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.dto;
+package com.crochet.spring.jpa.demo.payload.dto.ghn.shop;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,9 @@ public class CreateOrUpdateShopRequest {
     private String shopName;
     private String phone;
     private String address;
+    private String wardCode;
     private String wardName;
+    private int districtId;
     private String districtName;
     private String provinceName;
 }

@@ -2,9 +2,11 @@ package com.crochet.spring.jpa.demo.payload.dto.ghn.order;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class GHNItem {
     @SerializedName("name")
     @Expose
@@ -16,27 +18,27 @@ public class GHNItem {
 
     @SerializedName("quantity")
     @Expose
-    public long quantity;
+    public int quantity;
 
     @SerializedName("price")
     @Expose
-    public long price;
+    public int price;
 
     @SerializedName("length")
     @Expose
-    public long length = 12;
+    public int length;
 
     @SerializedName("weight")
     @Expose
-    public long weight = 1200;
+    public int weight;
 
     @SerializedName("width")
     @Expose
-    public long width;
+    public int width;
 
     @SerializedName("height")
     @Expose
-    public long height;
+    public int height;
 
     @SerializedName("category")
     @Expose

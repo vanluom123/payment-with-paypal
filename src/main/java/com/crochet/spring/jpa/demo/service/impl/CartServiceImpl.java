@@ -1,11 +1,17 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
-import com.crochet.spring.jpa.demo.model.*;
+import com.crochet.spring.jpa.demo.model.Cart;
+import com.crochet.spring.jpa.demo.model.Customer;
+import com.crochet.spring.jpa.demo.model.OrderProduct;
+import com.crochet.spring.jpa.demo.model.OrderProductDetail;
+import com.crochet.spring.jpa.demo.model.Product;
+import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCreateOrderRequest;
 import com.crochet.spring.jpa.demo.repository.CartRepo;
 import com.crochet.spring.jpa.demo.repository.CustomerRepo;
 import com.crochet.spring.jpa.demo.repository.OrderProductDetailRepo;
 import com.crochet.spring.jpa.demo.repository.OrderProductRepo;
 import com.crochet.spring.jpa.demo.service.CartService;
+import com.crochet.spring.jpa.demo.service.ghn.GHNService;
 import com.crochet.spring.jpa.demo.type.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,25 +34,28 @@ public class CartServiceImpl implements CartService {
     private OrderProductDetailRepo orderProductDetailRepo;
     @Autowired
     private CustomerRepo customerRepo;
+    @Autowired
+    private GHNService ghnService;
 
     @Override
-    public String addProductToCart(String customerId, String productId, int quantity) {
-        cartRepo.addProductToCart(UUID.fromString(customerId), UUID.fromString(productId), quantity);
+    public String addProductToCart(UUID customerId,
+                                   UUID productId,
+                                   int quantity) {
+        cartRepo.addProductToCart(customerId, productId, quantity);
         return "Added to cart";
     }
 
     @Override
-    public String placeOrder_2(String cusId) {
-        cartRepo.placeOrder(UUID.fromString(cusId));
+    public String placeOrder_2(UUID cusId) {
+        cartRepo.placeOrder(cusId);
         return "Order success";
     }
 
     @Transactional
     @Override
-    public String placeOrder(String customerId) {
+    public String placeOrder(UUID customerId) {
         // Kiem tra customer co ton tai khong
-        UUID cusUUID = UUID.fromString(customerId);
-        var customer = customerRepo.findById(cusUUID)
+        var customer = customerRepo.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not existed"));
 
         // Lay danh sach cart theo customer
@@ -54,6 +63,19 @@ public class CartServiceImpl implements CartService {
         if (ObjectUtils.isEmpty(carts)) {
             throw new RuntimeException("Cart not existed");
         }
+
+        GHNCreateOrderRequest ghnCreateOrderRequest = GHNCreateOrderRequest.builder()
+                .toName("TinTest124")
+                .toPhone("0987654321")
+                .toAddress("72 Thành Thái, Phường 14, Quận 10, Hồ Chí Minh, Vietnam")
+                .toWardCode("20308")
+                .toDistrictId(1444)
+                .content("The New York Times")
+                .weight(200)
+                .length(1)
+                .width(19)
+                .height(10)
+                .build();
 
         // Lay amount nhan cho quantity roi cong lai
         double totalAmount = carts.stream()

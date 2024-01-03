@@ -69,14 +69,6 @@ public class GHNServiceImpl implements GHNService {
     @Override
     public String createOrder(GHNCreateOrderRequest request) {
         String url = "/shiip/public-api/v2/shipping-order/create";
-        GHNGetShopsRequest getShopsRequest = new GHNGetShopsRequest(0, 50, "0969545937");
-        var shop = this.getAddressFromShop(getShopsRequest);
-        request.fromName(shop.get("from_name"))
-                .fromPhone(shop.get("from_phone"))
-                .fromAddress(shop.get("from_address"))
-                .fromProvinceName(shop.get("from_province_name"))
-                .fromDistrictName(shop.get("from_district_name"))
-                .fromWardName(shop.get("from_ward_name"));
         var payload = gson.toJson(request);
         String result = clientService.invokeApi(url,
                 HttpMethod.POST,
@@ -126,38 +118,4 @@ public class GHNServiceImpl implements GHNService {
 
         return data;
     }
-//    public Map<String, String> getAddressFromShop(GHNGetShopsRequest getShopsRequest) {
-//        Map<String, String> data = new HashMap<>();
-//
-//        var shopJsonString = this.getShopAll(getShopsRequest);
-//        var getShop = gson.fromJson(shopJsonString, GHNShopResponse.class);
-//        var shops = getShop.getData().getShops()
-//                .stream()
-//                .findFirst()
-//                .orElseThrow(() -> new RuntimeException("Cannot found shop"));
-//
-//        var provinceJsonString = this.getProvince();
-//        var getProvince = gson.fromJson(provinceJsonString, GHNProvinceResponse.class);
-//        var provinces = getProvince.getData();
-//        for (var province : provinces) {
-//            var districtJsonString = this.getDistrict(String.valueOf(province.getProvinceID()));
-//            var getDistrict = gson.fromJson(districtJsonString, GHNDistrictResponse.class);
-//            var districts = getDistrict.getData();
-//            for (var district : districts) {
-//                if (district.getDistrictID() == shops.getDistrictId()) {
-//                    data.put("from_province_name", province.getProvinceName());
-//                    data.put("from_district_name", district.getDistrictName());
-//                    var wardJsonString = this.getWard(String.valueOf(district.getDistrictID()));
-//                    var getWard = gson.fromJson(wardJsonString, GHNGetWardResponse.class);
-//                    var wards = getWard.getData();
-//                    for (var ward : wards) {
-//                        if (String.valueOf(ward.getWardCode()).equals(shops.getWardCode())) {
-//                            data.put("from_ward_name", ward.getWardName());
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return data;
-//    }
 }
