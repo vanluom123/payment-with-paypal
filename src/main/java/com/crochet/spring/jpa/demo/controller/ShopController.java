@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.controller;
 
-import com.crochet.spring.jpa.demo.payload.dto.ghn.shop.CreateOrUpdateShopRequest;
+import com.crochet.spring.jpa.demo.payload.dto.ghn.store.CreateOrUpdateShopRequest;
 import com.crochet.spring.jpa.demo.service.ShopService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;

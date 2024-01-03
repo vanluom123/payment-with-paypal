@@ -9,7 +9,12 @@ import java.util.UUID;
 @Builder
 public class ProductRequest {
     private UUID id;
+    private UUID categoryId;
     private String name;
     private double price;
     private String description;
+    private int height;
+    private int width;
+    private int length;
+    private int weight;
 }

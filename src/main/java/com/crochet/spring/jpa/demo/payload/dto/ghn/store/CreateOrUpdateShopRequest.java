@@ -1,4 +1,4 @@
-package com.crochet.spring.jpa.demo.payload.dto.ghn.shop;
+package com.crochet.spring.jpa.demo.payload.dto.ghn.store;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

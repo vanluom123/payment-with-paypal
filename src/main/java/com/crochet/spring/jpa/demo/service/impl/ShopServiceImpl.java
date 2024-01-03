@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
 import com.crochet.spring.jpa.demo.model.Shop;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.shop.CreateOrUpdateShopRequest;
+import com.crochet.spring.jpa.demo.payload.dto.ghn.store.CreateOrUpdateShopRequest;
 import com.crochet.spring.jpa.demo.repository.ShopRepo;
 import com.crochet.spring.jpa.demo.service.CustomerService;
 import com.crochet.spring.jpa.demo.service.ShopService;

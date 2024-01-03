@@ -31,21 +31,31 @@ public class ProductController {
     @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ApiResponse<ProductResponse>> saveProduct(
             @RequestParam(value = "id", required = false) UUID id,
+            @RequestParam(value = "category_id") UUID categoryId,
             @RequestParam("name") String name,
             @RequestParam("description") String desc,
             @RequestParam("price") Double price,
+            @RequestParam("height") int height,
+            @RequestParam("width") int width,
+            @RequestParam("length") int length,
+            @RequestParam("weight") int weight,
             @RequestPart(required = false) MultipartFile[] files
     ) {
         var request = ProductRequest.builder()
                 .id(id)
+                .categoryId(categoryId)
                 .name(name)
                 .description(desc)
                 .price(price)
+                .height(height)
+                .width(width)
+                .length(length)
+                .weight(weight)
                 .build();
         var result = ApiResponse.<ProductResponse>builder()
                 .success(true)
                 .message("Create product success")
-                .result(productService.saveProduct(request, files))
+                .result(productService.create(request, files))
                 .build();
         return ResponseEntity.ok(result);
     }

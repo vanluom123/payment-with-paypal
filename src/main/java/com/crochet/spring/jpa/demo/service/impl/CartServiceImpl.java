@@ -1,5 +1,6 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
+import com.crochet.spring.jpa.demo.mapper.ProductMapper;
 import com.crochet.spring.jpa.demo.model.Cart;
 import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.model.OrderProduct;
@@ -36,6 +37,8 @@ public class CartServiceImpl implements CartService {
     private CustomerRepo customerRepo;
     @Autowired
     private GHNService ghnService;
+    @Autowired
+    private ProductMapper productMapper;
 
     @Override
     public String addProductToCart(UUID customerId,
@@ -63,7 +66,8 @@ public class CartServiceImpl implements CartService {
         if (ObjectUtils.isEmpty(carts)) {
             throw new RuntimeException("Cart not existed");
         }
-
+        var products = carts.stream().map(Cart::getProduct).toList();
+        var ghnItems = productMapper.toGHNItems(products);
         GHNCreateOrderRequest ghnCreateOrderRequest = GHNCreateOrderRequest.builder()
                 .toName("TinTest124")
                 .toPhone("0987654321")
@@ -75,6 +79,7 @@ public class CartServiceImpl implements CartService {
                 .length(1)
                 .width(19)
                 .height(10)
+                .items(ghnItems)
                 .build();
 
         // Lay amount nhan cho quantity roi cong lai

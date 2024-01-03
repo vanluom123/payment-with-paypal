@@ -5,6 +5,7 @@ import com.crochet.spring.jpa.demo.model.Product;
 import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
 import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
 import com.crochet.spring.jpa.demo.repository.ProductRepo;
+import com.crochet.spring.jpa.demo.service.CategoryService;
 import com.crochet.spring.jpa.demo.service.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
@@ -16,34 +17,48 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepo productRepo;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private ProductMapper productMapper;
 
     @Transactional
     @Override
-    public ProductResponse saveProduct(ProductRequest request, MultipartFile[] files) {
+    public ProductResponse create(ProductRequest request, MultipartFile[] files) {
         Product product;
         if (request.getId() == null) {
             // Create product
+            var category = categoryService.getCategoryById(request.getCategoryId());
             product = Product.builder()
+                    .category(category)
                     .name(request.getName())
                     .price(request.getPrice())
                     .description(request.getDescription())
+                    .height(request.getHeight())
+                    .width(request.getWidth())
+                    .length(request.getLength())
+                    .weight(request.getWeight())
                     .files(convertMultipartFileToString(files)).build();
         } else {
             // Update product
-            product = productRepo.findById(request.getId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
+            product = getById(request.getId());
             product.setName(request.getName());
             product.setDescription(request.getDescription());
             product.setPrice(request.getPrice());
+            product.setHeight(request.getHeight());
+            product.setWidth(request.getWidth());
+            product.setLength(request.getLength());
+            product.setWeight(request.getWeight());
             product.setFiles(convertMultipartFileToString(files));
         }
         product = productRepo.save(product);
-        return ProductMapper.INSTANCE.productToProductResult(product);
+        return productMapper.toResponse(product);
     }
 
     @SneakyThrows
@@ -61,6 +76,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponse> getAll() {
         var products = productRepo.findAll();
-        return ProductMapper.INSTANCE.productsToProductResults(products);
+        return productMapper.toResponses(products);
+    }
+
+    @Override
+    public Product getById(UUID uuid) {
+        return productRepo.findById(uuid)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 }
