@@ -8,9 +8,9 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class ProductRequest {
-    @SerializedName("category_id")
-    private UUID categoryId;
+public class UpdateProductRequest {
+    @SerializedName("product_id")
+    private UUID id;
     private String name;
     private double price;
     private String description;

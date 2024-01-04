@@ -3,6 +3,7 @@ package com.crochet.spring.jpa.demo.service.impl;
 import com.crochet.spring.jpa.demo.mapper.ProductMapper;
 import com.crochet.spring.jpa.demo.model.Product;
 import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
+import com.crochet.spring.jpa.demo.payload.request.UpdateProductRequest;
 import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
 import com.crochet.spring.jpa.demo.repository.ProductRepo;
 import com.crochet.spring.jpa.demo.service.CategoryService;
@@ -31,34 +32,34 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public ProductResponse create(ProductRequest request, MultipartFile[] files) {
-        Product product;
-        if (request.getId() == null) {
-            // Create product
-            var category = categoryService.getCategoryById(request.getCategoryId());
-            product = Product.builder()
-                    .category(category)
-                    .name(request.getName())
-                    .price(request.getPrice())
-                    .description(request.getDescription())
-                    .height(request.getHeight())
-                    .width(request.getWidth())
-                    .length(request.getLength())
-                    .weight(request.getWeight())
-                    .files(convertMultipartFileToString(files)).build();
-        } else {
-            // Update product
-            product = getById(request.getId());
-            product.setName(request.getName());
-            product.setDescription(request.getDescription());
-            product.setPrice(request.getPrice());
-            product.setHeight(request.getHeight());
-            product.setWidth(request.getWidth());
-            product.setLength(request.getLength());
-            product.setWeight(request.getWeight());
-            product.setFiles(convertMultipartFileToString(files));
-        }
+        var category = categoryService.getCategoryById(request.getCategoryId());
+        Product product = Product.builder()
+                .category(category)
+                .name(request.getName())
+                .price(request.getPrice())
+                .description(request.getDescription())
+                .height(request.getHeight())
+                .width(request.getWidth())
+                .length(request.getLength())
+                .weight(request.getWeight())
+                .files(convertMultipartFileToString(files)).build();
         product = productRepo.save(product);
         return productMapper.toResponse(product);
+    }
+
+    @Transactional
+    @Override
+    public String update(UpdateProductRequest request, MultipartFile[] files) {
+        var product = this.getById(request.getId());
+        product.setName(request.getName());
+        product.setPrice(request.getPrice());
+        product.setDescription(request.getDescription());
+        product.setHeight(request.getHeight());
+        product.setWidth(request.getWidth());
+        product.setLength(request.getLength());
+        product.setWeight(request.getWeight());
+        product.setFiles(convertMultipartFileToString(files));
+        return "Update success";
     }
 
     @SneakyThrows
