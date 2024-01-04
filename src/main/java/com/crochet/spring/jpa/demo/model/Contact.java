@@ -27,7 +27,7 @@ public class Contact extends BaseEntity {
     private String phone;
 
     @Column(name = "ward_code")
-    private String wardCode;
+    private int wardCode;
 
     @Column(name = "ward_name")
     private String wardName;
