@@ -1,7 +1,16 @@
 package com.crochet.spring.jpa.demo.model;
 
 import com.crochet.spring.jpa.demo.type.RoleType;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,23 +30,14 @@ public class Customer extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "address", length = 512, nullable = false)
-    private String address;
-
     @Column(name = "email", length = 128, nullable = false)
     private String email;
-
-    @Column(name = "phone", length = 32, nullable = false)
-    private String phone;
 
     @Column(name = "username", nullable = false)
     private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
-
-    @Column(name = "enabled", nullable = false)
-    private boolean enabled;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", columnDefinition = "VARCHAR(5) DEFAULT 'USER'")
@@ -56,6 +56,9 @@ public class Customer extends BaseEntity {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Contact> contact;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -69,7 +72,6 @@ public class Customer extends BaseEntity {
         Customer customer = (Customer) o;
         return (getId() != null && Objects.equals(getId(), customer.getId()))
                 || Objects.equals(getUsername(), customer.getUsername())
-                || Objects.equals(getEmail(), customer.getEmail())
-                || Objects.equals(getPhone(), customer.getPhone());
+                || Objects.equals(getEmail(), customer.getEmail());
     }
 }
