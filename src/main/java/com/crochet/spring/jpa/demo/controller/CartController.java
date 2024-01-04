@@ -29,10 +29,4 @@ public class CartController {
         var result = cartService.addProductToCart(customerId, productId, quantity);
         return ResponseEntity.ok(result);
     }
-
-    @PostMapping("/placeOrder")
-    public ResponseEntity<String> placeOrder(@RequestParam("customer_id") UUID cusId) {
-        var result = cartService.placeOrder(cusId);
-        return ResponseEntity.ok(result);
-    }
 }

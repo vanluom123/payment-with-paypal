@@ -10,6 +10,7 @@ import com.crochet.spring.jpa.demo.service.PatternService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class PatternServiceImpl implements PatternService {
     private PatternRepo patternRepo;
     @Autowired
     private OrderPatternDetailRepo orderPatternDetailRepo;
+    @Autowired
+    private PatternMapper patternMapper;
 
     @Override
     public String create(PatternRequest request, MultipartFile[] files) {
@@ -38,6 +41,9 @@ public class PatternServiceImpl implements PatternService {
 
     @SneakyThrows
     private List<String> convertMultipartToString(MultipartFile[] files) {
+        if (ObjectUtils.isEmpty(files)) {
+            return null;
+        }
         List<String> urls = new ArrayList<>();
         for (var file : files) {
             urls.add(Base64.getEncoder().encodeToString(file.getBytes()));
@@ -62,6 +68,6 @@ public class PatternServiceImpl implements PatternService {
     public PatternResponse getPattern(UUID customerId, UUID patternId) {
         var pattern = patternRepo.findCompletedPatterns(customerId, patternId)
                 .orElseThrow(() -> new RuntimeException("Pattern not ordered"));
-        return PatternMapper.INSTANCE.toResponse(pattern);
+        return patternMapper.toResponse(pattern);
     }
 }

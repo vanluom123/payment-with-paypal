@@ -17,38 +17,42 @@ import java.util.UUID;
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepo customerRepo;
+    @Autowired
+    private CustomerMapper customerMapper;
 
     @Transactional
     @Override
     public CustomerResponse save(CustomerRequest request) {
         Customer customer;
         if (request.getId() == null) {
-            customer = Customer.builder()
-                    .name(request.getName())
-                    .address(request.getAddress())
-                    .email(request.getEmail())
-                    .phone(request.getPhone())
-                    .username(request.getUsername())
-                    .password(request.getPassword())
-                    .build();
+            customer = new Customer();
         } else {
-            customer = customerRepo.findById(request.getId())
-                    .orElseThrow(() -> new RuntimeException("Cannot found customer"));
-            CustomerMapper.INSTANCE.partialUpdate(request, customer);
+            customer = getCustomerById(request.getId());
         }
 
         if (invalidCustomer(customer)) {
             throw new RuntimeException("Customer already exist");
         }
 
+        customer.setName(request.getName());
+        customer.setAddress(request.getAddress());
+        customer.setEmail(request.getEmail());
+        customer.setPhone(request.getPhone());
+        customer.setUsername(request.getUsername());
+        customer.setPassword(request.getPassword());
         customer = customerRepo.save(customer);
-        return CustomerMapper.INSTANCE.customerToCustomerResult(customer);
+        return customerMapper.customerToCustomerResult(customer);
     }
 
     @Override
     public List<CustomerResponse> getAll() {
-        var cus = customerRepo.findAll();
-        return CustomerMapper.INSTANCE.toResults(cus);
+        var cus = this.findAll();
+        return customerMapper.toResults(cus);
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        return customerRepo.findAll();
     }
 
     private boolean invalidCustomer(Customer existCustomer) {

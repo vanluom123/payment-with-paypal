@@ -15,6 +15,7 @@ import java.util.List;
 public class GHNCreateOrderRequest {
     @SerializedName("payment_type_id")
     @Expose
+    @Builder.Default
     public int paymentTypeId = AppConstant.BUYER_PAYMENT;
 
     @SerializedName("note")
@@ -24,30 +25,37 @@ public class GHNCreateOrderRequest {
     @SerializedName("required_note")
     @Expose
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     public String requiredNote = "CHOTHUHANG";
 
     @SerializedName("from_name")
     @Expose
+    @Builder.Default
     public String fromName = "Little crochet Tieu Phuong";
 
     @SerializedName("from_phone")
     @Expose
+    @Builder.Default
     public String fromPhone = "0969545937";
 
     @SerializedName("from_address")
     @Expose
+    @Builder.Default
     public String fromAddress = "trường Khoa học Xã hội và Nhân văn làng Đại học";
 
     @SerializedName("from_ward_name")
     @Expose
+    @Builder.Default
     public String fromWardName = "Phường Đông Hòa";
 
     @SerializedName("from_district_name")
     @Expose
+    @Builder.Default
     public String fromDistrictName = "Thành phố Dĩ An";
 
     @SerializedName("from_province_name")
     @Expose
+    @Builder.Default
     public String fromProvinceName = "Bình Dương";
 
     @SerializedName("to_name")
@@ -92,10 +100,12 @@ public class GHNCreateOrderRequest {
 
     @SerializedName("service_id")
     @Expose
+    @Builder.Default
     public int serviceId = 0;
 
     @SerializedName("service_type_id")
     @Expose
+    @Builder.Default
     public int serviceTypeId = AppConstant.ECOMMERCE_DELIVERY;
 
     @SerializedName("items")

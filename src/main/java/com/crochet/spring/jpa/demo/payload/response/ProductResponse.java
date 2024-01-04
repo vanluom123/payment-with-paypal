@@ -10,5 +10,9 @@ public class ProductResponse {
     private String name;
     private double price;
     private String description;
+    private int height;
+    private int width;
+    private int length;
+    private int weight;
     private List<String> files;
 }

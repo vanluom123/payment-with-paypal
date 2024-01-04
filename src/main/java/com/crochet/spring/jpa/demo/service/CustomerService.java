@@ -12,5 +12,7 @@ public interface CustomerService {
 
     List<CustomerResponse> getAll();
 
+    List<Customer> findAll();
+
     Customer getCustomerById(UUID id);
 }

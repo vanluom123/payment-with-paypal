@@ -1,11 +1,15 @@
 package com.crochet.spring.jpa.demo.service;
 
+import com.crochet.spring.jpa.demo.model.Cart;
+import com.crochet.spring.jpa.demo.model.Customer;
+
+import java.util.List;
 import java.util.UUID;
 
 public interface CartService {
     String addProductToCart(UUID customerId, UUID productId, int quantity);
 
-    String placeOrder_2(UUID cusId);
+    List<Cart> getAllCartByCustomer(Customer customer);
 
-    String placeOrder(UUID customerId);
+    void deleteAll(List<Cart> carts);
 }

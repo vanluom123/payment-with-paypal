@@ -9,6 +9,7 @@ import com.crochet.spring.jpa.demo.service.ghn.GHNService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -38,6 +39,11 @@ public class ShopServiceImpl implements ShopService {
         shop.setProvinceName(request.getProvinceName());
         shopRepo.save(shop);
         return "Create shop success";
+    }
+
+    @Override
+    public List<Shop> getAll() {
+        return shopRepo.findAll();
     }
 
     public Shop getShopById(UUID id) {
