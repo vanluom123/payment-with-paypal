@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.mapper;
 
-import com.crochet.spring.jpa.demo.model.Category;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCategory;
+import com.crochet.spring.jpa.demo.payload.response.CategoryResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -11,5 +11,5 @@ import org.mapstruct.ReportingPolicy;
         componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoryMapper {
     @Mapping(target = "level1", source = "name")
-    GHNCategory toGHNCategory(Category category);
+    GHNCategory toGHNCategory(CategoryResponse category);
 }

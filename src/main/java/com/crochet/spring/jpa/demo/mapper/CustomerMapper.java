@@ -3,7 +3,6 @@ package com.crochet.spring.jpa.demo.mapper;
 import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.payload.request.CustomerRequest;
 import com.crochet.spring.jpa.demo.payload.response.CustomerResponse;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
@@ -20,9 +19,11 @@ import java.util.UUID;
         componentModel = MappingConstants.ComponentModel.SPRING,
         uses = {OrderMapper.class})
 public interface CustomerMapper {
-    CustomerResponse customerToCustomerResult(Customer customer);
+    CustomerResponse toResponse(Customer customer);
 
-    List<CustomerResponse> toResults(Collection<Customer> customers);
+    Customer toEntity(CustomerResponse response);
+
+    List<CustomerResponse> toResponses(Collection<Customer> customers);
 
     @Named("stringToUUID")
     default UUID stringToUUID(String id) {
@@ -33,10 +34,5 @@ public interface CustomerMapper {
     }
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void partialUpdate(CustomerRequest customerRequest, @MappingTarget Customer customer);
-
-    @AfterMapping
-    default void linkOrders(@MappingTarget Customer customer) {
-        customer.getOrderPatterns().forEach(order -> order.setCustomer(customer));
-    }
+    void update(CustomerRequest customerRequest, @MappingTarget Customer customer);
 }

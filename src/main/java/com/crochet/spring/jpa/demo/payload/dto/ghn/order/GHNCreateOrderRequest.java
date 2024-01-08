@@ -3,8 +3,6 @@ package com.crochet.spring.jpa.demo.payload.dto.ghn.order;
 import com.crochet.spring.jpa.demo.common.AppConstant;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,99 +14,138 @@ public class GHNCreateOrderRequest {
     @SerializedName("payment_type_id")
     @Expose
     @Builder.Default
-    public int paymentTypeId = AppConstant.BUYER_PAYMENT;
+    private Integer paymentTypeId = AppConstant.BUYER_PAYMENT;
 
     @SerializedName("note")
     @Expose
-    public String note;
+    @Builder.Default
+    private String note = "";
 
     @SerializedName("required_note")
     @Expose
-    @Enumerated(EnumType.STRING)
     @Builder.Default
-    public String requiredNote = "CHOTHUHANG";
+    private String requiredNote = "CHOTHUHANG";
 
     @SerializedName("from_name")
     @Expose
-    @Builder.Default
-    public String fromName = "Little crochet Tieu Phuong";
+    private String fromName;
 
     @SerializedName("from_phone")
     @Expose
-    @Builder.Default
-    public String fromPhone = "0969545937";
+    private String fromPhone;
 
     @SerializedName("from_address")
     @Expose
-    @Builder.Default
-    public String fromAddress = "trường Khoa học Xã hội và Nhân văn làng Đại học";
+    private String fromAddress;
 
     @SerializedName("from_ward_name")
     @Expose
-    @Builder.Default
-    public String fromWardName = "Phường Đông Hòa";
+    private String fromWardName;
 
     @SerializedName("from_district_name")
     @Expose
-    @Builder.Default
-    public String fromDistrictName = "Thành phố Dĩ An";
+    private String fromDistrictName;
 
     @SerializedName("from_province_name")
     @Expose
-    @Builder.Default
-    public String fromProvinceName = "Bình Dương";
+    private String fromProvinceName;
+
+    @SerializedName("return_phone")
+    @Expose
+    private String returnPhone;
+
+    @SerializedName("return_address")
+    @Expose
+    private String returnAddress;
+
+    @SerializedName("return_district_id")
+    @Expose
+    private Object returnDistrictId;
+
+    @SerializedName("return_ward_code")
+    @Expose
+    private String returnWardCode;
+
+    @SerializedName("client_order_code")
+    @Expose
+    private String clientOrderCode;
 
     @SerializedName("to_name")
     @Expose
-    public String toName;
+    private String toName;
 
     @SerializedName("to_phone")
     @Expose
-    public String toPhone;
+    private String toPhone;
 
     @SerializedName("to_address")
     @Expose
-    public String toAddress;
+    private String toAddress;
 
     @SerializedName("to_ward_code")
     @Expose
-    public String toWardCode;
+    private String toWardCode;
 
     @SerializedName("to_district_id")
     @Expose
-    public int toDistrictId;
+    private Integer toDistrictId;
+
+    @SerializedName("cod_amount")
+    @Expose
+    @Builder.Default
+    private Integer codAmount = 0;
 
     @SerializedName("content")
     @Expose
-    public String content;
+    private String content;
 
     @SerializedName("weight")
     @Expose
-    public int weight;
+    private Integer weight;
 
     @SerializedName("length")
     @Expose
-    public int length;
+    private Integer length;
 
     @SerializedName("width")
     @Expose
-    public int width;
+    private Integer width;
 
     @SerializedName("height")
     @Expose
-    public int height;
+    private Integer height;
+
+    @SerializedName("pick_station_id")
+    @Expose
+    private Integer pickStationId;
+
+    @SerializedName("deliver_station_id")
+    @Expose
+    private Integer deliverStationId;
+
+    @SerializedName("insurance_value")
+    @Expose
+    private Integer insuranceValue;
 
     @SerializedName("service_id")
     @Expose
     @Builder.Default
-    public int serviceId = 0;
+    private Integer serviceId = 0;
 
     @SerializedName("service_type_id")
     @Expose
     @Builder.Default
-    public int serviceTypeId = AppConstant.ECOMMERCE_DELIVERY;
+    private Integer serviceTypeId = AppConstant.ECOMMERCE_DELIVERY;
+
+    @SerializedName("coupon")
+    @Expose
+    private String coupon;
+
+    @SerializedName("pick_shift")
+    @Expose
+    private List<Integer> pickShift;
 
     @SerializedName("items")
     @Expose
-    public List<GHNItem> items;
+    private List<GHNItem> items;
 }

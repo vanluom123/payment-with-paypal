@@ -12,4 +12,6 @@ public interface CartService {
     List<Cart> getAllCartByCustomer(Customer customer);
 
     void deleteAll(List<Cart> carts);
+
+    Integer getQuantityByProductId(String productId);
 }

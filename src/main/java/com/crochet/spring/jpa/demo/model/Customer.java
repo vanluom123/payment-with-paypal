@@ -6,11 +6,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,10 +26,11 @@ import java.util.Objects;
 @SuperBuilder
 @NoArgsConstructor
 public class Customer extends BaseEntity {
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", columnDefinition = "NVARCHAR(50)")
     private String name;
 
-    @Column(name = "email", length = 128, nullable = false)
+    @Email
+    @Column(name = "email", length = 128, nullable = false, unique = true)
     private String email;
 
     @Column(name = "username", nullable = false)
@@ -52,12 +52,11 @@ public class Customer extends BaseEntity {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Cart> carts;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "shop_id")
+    @OneToOne(mappedBy = "customer")
     private Shop shop;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Contact> contact;
+    private List<Contact> contacts;
 
     @Override
     public final boolean equals(Object o) {

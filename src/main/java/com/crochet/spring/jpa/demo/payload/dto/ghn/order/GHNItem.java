@@ -28,10 +28,6 @@ public class GHNItem {
     @Expose
     public int length;
 
-    @SerializedName("weight")
-    @Expose
-    public int weight;
-
     @SerializedName("width")
     @Expose
     public int width;
@@ -39,6 +35,10 @@ public class GHNItem {
     @SerializedName("height")
     @Expose
     public int height;
+
+    @SerializedName("weight")
+    @Expose
+    public int weight;
 
     @SerializedName("category")
     @Expose

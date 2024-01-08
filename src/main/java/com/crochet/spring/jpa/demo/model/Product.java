@@ -57,6 +57,10 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "category_id", columnDefinition = "BINARY(16) NOT NULL")
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id", columnDefinition = "BINARY(16) NOT NULL")
+    private Shop shop;
+
     @ElementCollection
     @CollectionTable(name = "file_modal",
             joinColumns = {@JoinColumn(name = "product_id", nullable = false)})

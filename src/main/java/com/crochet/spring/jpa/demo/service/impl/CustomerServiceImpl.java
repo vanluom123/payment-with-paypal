@@ -39,13 +39,13 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setUsername(request.getUsername());
         customer.setPassword(request.getPassword());
         customer = customerRepo.save(customer);
-        return customerMapper.customerToCustomerResult(customer);
+        return customerMapper.toResponse(customer);
     }
 
     @Override
     public List<CustomerResponse> getAll() {
         var cus = this.findAll();
-        return customerMapper.toResults(cus);
+        return customerMapper.toResponses(cus);
     }
 
     @Override

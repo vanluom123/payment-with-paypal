@@ -20,26 +20,32 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Contact extends BaseEntity {
-    @Column(name = "address", length = 512, nullable = false)
+    @Column(name = "name", columnDefinition = "NVARCHAR(255) NOT NULL")
+    private String name;
+
+    @Column(name = "address", columnDefinition = "NVARCHAR(512) NOT NULL")
     private String address;
 
     @Column(name = "phone", length = 32, nullable = false)
     private String phone;
 
     @Column(name = "ward_code")
-    private int wardCode;
+    private String wardCode;
 
-    @Column(name = "ward_name")
+    @Column(name = "ward_name", columnDefinition = "NVARCHAR(50)")
     private String wardName;
 
     @Column(name = "district_id")
     private int districtID;
 
-    @Column(name = "district_name")
+    @Column(name = "district_name", columnDefinition = "NVARCHAR(50)")
     private String districtName;
 
-    @Column(name = "province_name")
+    @Column(name = "province_name", columnDefinition = "NVARCHAR(50)")
     private String provinceName;
+
+    @Column(name = "is_default", columnDefinition = "BOOLEAN DEFAULT FALSE")
+    public boolean isDefault;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", columnDefinition = "BINARY(16) NOT NULL")

@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category extends BaseEntity {
-    @Column(name = "name", columnDefinition = "VARCHAR(255) NOT NULL", unique = true)
+    @Column(name = "name", columnDefinition = "NVARCHAR(255) NOT NULL", unique = true)
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)

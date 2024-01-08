@@ -34,4 +34,9 @@ public class CartServiceImpl implements CartService {
     public void deleteAll(List<Cart> carts) {
         cartRepo.deleteAll(carts);
     }
+
+    @Override
+    public Integer getQuantityByProductId(String productId) {
+        return cartRepo.findQuantityByProductId(UUID.fromString(productId));
+    }
 }

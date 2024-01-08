@@ -1,7 +1,6 @@
 package com.crochet.spring.jpa.demo.controller;
 
 import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
-import com.crochet.spring.jpa.demo.payload.request.UpdateProductRequest;
 import com.crochet.spring.jpa.demo.payload.response.ApiResponse;
 import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
 import com.crochet.spring.jpa.demo.service.ProductService;
@@ -25,26 +24,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping(value = "/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<String> update(
-            @RequestParam(value = "product_id") UUID id,
-            @RequestParam("name") String name,
-            @RequestParam("description") String desc,
-            @RequestParam("price") Double price,
-            @RequestParam("height") int height,
-            @RequestParam("width") int width,
-            @RequestParam("length") int length,
-            @RequestParam("weight") int weight,
-            @RequestPart(required = false) MultipartFile[] files
-    ) {
-        var request = new UpdateProductRequest(id, name, price, desc, height, width, length, weight);
-        var result = productService.update(request, files);
-        return ResponseEntity.ok(result);
-    }
-
     @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ApiResponse<ProductResponse>> create(
-            @RequestParam(value = "category_id") UUID categoryId,
+            @RequestParam(value = "productId", required = false) UUID productId,
+            @RequestParam(value = "category_id", required = false) UUID categoryId,
+            @RequestParam(value = "shop_id", required = false) UUID shopId,
             @RequestParam("name") String name,
             @RequestParam("description") String desc,
             @RequestParam("price") Double price,
@@ -54,11 +38,22 @@ public class ProductController {
             @RequestParam("weight") int weight,
             @RequestPart(required = false) MultipartFile[] files
     ) {
-        var request = new ProductRequest(categoryId, name, price, desc, height, width, length, weight);
+        var request = ProductRequest.builder()
+                .productId(productId)
+                .categoryId(categoryId)
+                .shopId(shopId)
+                .name(name)
+                .description(desc)
+                .price(price)
+                .height(height)
+                .width(width)
+                .length(length)
+                .weight(weight)
+                .build();
         var result = ApiResponse.<ProductResponse>builder()
                 .success(true)
                 .message("Create product success")
-                .result(productService.create(request, files))
+                .data(productService.createOrUpdate(request, files))
                 .build();
         return ResponseEntity.ok(result);
     }
@@ -68,7 +63,7 @@ public class ProductController {
         var result = ApiResponse.<List<ProductResponse>>builder()
                 .success(true)
                 .message("Get success")
-                .result(productService.getAll())
+                .data(productService.getAll())
                 .build();
         return ResponseEntity.ok(result);
     }

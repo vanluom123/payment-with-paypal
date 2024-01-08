@@ -3,11 +3,11 @@ package com.crochet.spring.jpa.demo.service.impl;
 import com.crochet.spring.jpa.demo.mapper.ProductMapper;
 import com.crochet.spring.jpa.demo.model.Product;
 import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
-import com.crochet.spring.jpa.demo.payload.request.UpdateProductRequest;
 import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
 import com.crochet.spring.jpa.demo.repository.ProductRepo;
 import com.crochet.spring.jpa.demo.service.CategoryService;
 import com.crochet.spring.jpa.demo.service.ProductService;
+import com.crochet.spring.jpa.demo.service.ShopService;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,29 +28,22 @@ public class ProductServiceImpl implements ProductService {
     private CategoryService categoryService;
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private ShopService shopService;
 
     @Transactional
     @Override
-    public ProductResponse create(ProductRequest request, MultipartFile[] files) {
-        var category = categoryService.getCategoryById(request.getCategoryId());
-        Product product = Product.builder()
-                .category(category)
-                .name(request.getName())
-                .price(request.getPrice())
-                .description(request.getDescription())
-                .height(request.getHeight())
-                .width(request.getWidth())
-                .length(request.getLength())
-                .weight(request.getWeight())
-                .files(convertMultipartFileToString(files)).build();
-        product = productRepo.save(product);
-        return productMapper.toResponse(product);
-    }
-
-    @Transactional
-    @Override
-    public String update(UpdateProductRequest request, MultipartFile[] files) {
-        var product = this.getById(request.getId());
+    public ProductResponse createOrUpdate(ProductRequest request, MultipartFile[] files) {
+        Product product;
+        if (request.getProductId() == null) {
+            product = new Product();
+            var category = categoryService.getCategoryById(request.getCategoryId());
+            var shop = shopService.getById(request.getShopId());
+            product.setCategory(category);
+            product.setShop(shop);
+        } else {
+            product = this.getById(request.getProductId());
+        }
         product.setName(request.getName());
         product.setPrice(request.getPrice());
         product.setDescription(request.getDescription());
@@ -59,15 +52,16 @@ public class ProductServiceImpl implements ProductService {
         product.setLength(request.getLength());
         product.setWeight(request.getWeight());
         product.setFiles(convertMultipartFileToString(files));
-        return "Update success";
+        product = productRepo.save(product);
+        return productMapper.toResponse(product);
     }
 
     @SneakyThrows
     private List<String> convertMultipartFileToString(MultipartFile[] files) {
-        List<String> urls = new ArrayList<>();
         if (ObjectUtils.isEmpty(files)) {
             return null;
         }
+        List<String> urls = new ArrayList<>();
         for (var file : files) {
             urls.add(Base64.getEncoder().encodeToString(file.getBytes()));
         }

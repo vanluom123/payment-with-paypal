@@ -3,10 +3,11 @@ package com.crochet.spring.jpa.demo.payload.response;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class ProductResponse {
-    private String id;
+    private UUID id;
     private String name;
     private double price;
     private String description;
@@ -15,4 +16,5 @@ public class ProductResponse {
     private int length;
     private int weight;
     private List<String> files;
+    private CategoryResponse categoryResponse;
 }

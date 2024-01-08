@@ -15,12 +15,14 @@ import java.util.List;
         componentModel = MappingConstants.ComponentModel.SPRING,
         uses = {CategoryMapper.class})
 public interface ProductMapper {
+    @Mapping(target = "categoryResponse", source = "category")
     ProductResponse toResponse(Product product);
 
     List<ProductResponse> toResponses(Collection<Product> products);
 
     @Mapping(target = "code", source = "id")
-    GHNItem toGHNItem(Product product);
+    @Mapping(target = "category", source = "categoryResponse")
+    GHNItem toGHNItem(ProductResponse product);
 
-    List<GHNItem> toGHNItems(Collection<Product> products);
+    List<GHNItem> toGHNItems(Collection<ProductResponse> products);
 }

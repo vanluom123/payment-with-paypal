@@ -29,12 +29,14 @@ public class ShopServiceImpl implements ShopService {
             var customer = customerService.getCustomerById(request.getCustomerId());
             shop.setCustomer(customer);
         } else {
-            shop = this.getShopById(request.getId());
+            shop = this.getById(request.getId());
         }
         shop.setShopName(request.getShopName());
         shop.setPhone(request.getPhone());
         shop.setAddress(request.getAddress());
+        shop.setWardCode(request.getWardCode());
         shop.setWardName(request.getWardName());
+        shop.setDistrictID(request.getDistrictId());
         shop.setDistrictName(request.getDistrictName());
         shop.setProvinceName(request.getProvinceName());
         shopRepo.save(shop);
@@ -46,7 +48,8 @@ public class ShopServiceImpl implements ShopService {
         return shopRepo.findAll();
     }
 
-    public Shop getShopById(UUID id) {
+    @Override
+    public Shop getById(UUID id) {
         return shopRepo.findById(id).orElseThrow(() -> new RuntimeException("Cannot found shop"));
     }
 }
