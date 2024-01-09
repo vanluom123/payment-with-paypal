@@ -6,21 +6,23 @@ import com.crochet.spring.jpa.demo.mapper.ProductMapper;
 import com.crochet.spring.jpa.demo.mapper.ShopMapper;
 import com.crochet.spring.jpa.demo.model.Cart;
 import com.crochet.spring.jpa.demo.model.Contact;
-import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.model.OrderProduct;
 import com.crochet.spring.jpa.demo.model.OrderProductDetail;
-import com.crochet.spring.jpa.demo.model.Product;
+import com.crochet.spring.jpa.demo.payload.dto.CheckoutOrderProductDTO;
+import com.crochet.spring.jpa.demo.payload.dto.ContactDTO;
+import com.crochet.spring.jpa.demo.payload.dto.ShopDTO;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCreateOrderRequest;
-import com.crochet.spring.jpa.demo.payload.response.CheckoutOrderProductResponse;
-import com.crochet.spring.jpa.demo.payload.response.ContactResponse;
-import com.crochet.spring.jpa.demo.payload.response.ShopResponse;
 import com.crochet.spring.jpa.demo.repository.OrderProductRepo;
 import com.crochet.spring.jpa.demo.service.CartService;
+import com.crochet.spring.jpa.demo.service.ContactService;
 import com.crochet.spring.jpa.demo.service.CustomerService;
 import com.crochet.spring.jpa.demo.service.OrderProductDetailService;
 import com.crochet.spring.jpa.demo.service.OrderProductService;
+import com.crochet.spring.jpa.demo.service.ProductService;
+import com.crochet.spring.jpa.demo.service.ShopService;
 import com.crochet.spring.jpa.demo.service.ghn.GHNService;
 import com.crochet.spring.jpa.demo.type.OrderStatus;
+import com.crochet.spring.jpa.demo.type.PaymentMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,7 @@ import java.util.stream.Collectors;
 public class OrderProductServiceImpl implements OrderProductService {
     @Autowired
     private OrderProductRepo orderProductRepo;
+
     @Autowired
     private CustomerService customerService;
     @Autowired
@@ -43,64 +46,51 @@ public class OrderProductServiceImpl implements OrderProductService {
     @Autowired
     private OrderProductDetailService orderProductDetailService;
     @Autowired
+    private GHNService ghnService;
+    @Autowired
+    private ContactService contactService;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private ShopService shopService;
+
+    @Autowired
     private ProductMapper productMapper;
     @Autowired
     private ContactMapper contactMapper;
     @Autowired
     private ShopMapper shopMapper;
     @Autowired
-    private GHNService ghnService;
-    @Autowired
     private CustomerMapper customerMapper;
 
     @Override
-    public CheckoutOrderProductResponse checkOutOrder(UUID customerId) {
+    public CheckoutOrderProductDTO checkOutOrder(UUID customerId) {
         var customer = customerService.getCustomerById(customerId);
 
-        Contact contact = findDefaultContact(customer);
-        ShopResponse shop = findShopForProducts(customer);
+        Contact contact = contactService.findDefaultContact(customer);
+        ShopDTO shop = shopMapper.toDTO(shopService.findShopForProducts(customer));
 
-        var checkoutOrderProduct = CheckoutOrderProductResponse.builder()
-                .contact(contactMapper.toResponse(contact))
+        var checkoutOrderProduct = CheckoutOrderProductDTO.builder()
+                .contact(contactMapper.toDTO(contact))
                 .shop(shop)
-                .products(productMapper.toResponses(getProductsFromCart(customer)))
-                .customer(customerMapper.toResponse(customer))
+                .products(productMapper.toDTOs(productService.getProductsFromCart(customer)))
+                .customer(customerMapper.toDTO(customer))
                 .build();
-
-        buildGHNOrderRequest(checkoutOrderProduct);
 
         return checkoutOrderProduct;
     }
 
-    private Contact findDefaultContact(Customer customer) {
-        return customer.getContacts()
-                .stream()
-                .filter(Contact::isDefault)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Default contact not found"));
-    }
-
-    private ShopResponse findShopForProducts(Customer customer) {
-        return customer.getCarts()
-                .stream()
-                .map(Cart::getProduct)
-                .map(prod -> shopMapper.toResponse(prod.getShop()))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Shop not found"));
-    }
-
-    private List<Product> getProductsFromCart(Customer customer) {
-        return customer.getCarts()
-                .stream()
-                .map(Cart::getProduct)
-                .toList();
-    }
-
-    private GHNCreateOrderRequest buildGHNOrderRequest(CheckoutOrderProductResponse checkoutOrderProductResponse) {
-        ShopResponse shop = checkoutOrderProductResponse.getShop();
-        ContactResponse contact = checkoutOrderProductResponse.getContact();
-        var ghnItems = productMapper.toGHNItems(checkoutOrderProductResponse.getProducts());
+    private GHNCreateOrderRequest buildGHNOrderRequest(CheckoutOrderProductDTO checkoutOrderProductDTO) {
+        ShopDTO shop = checkoutOrderProductDTO.getShop();
+        ContactDTO contact = checkoutOrderProductDTO.getContact();
+        var ghnItems = productMapper.toGHNItems(checkoutOrderProductDTO.getProducts());
         ghnItems.forEach(item -> item.setQuantity(cartService.getQuantityByProductId(item.getCode())));
+        int amount = 0;
+        if (checkoutOrderProductDTO.getPaymentMethod() == PaymentMethod.PAYMENT_AFTER_RECEIVED.getValue()) {
+            amount = ghnItems.stream()
+                    .mapToInt(item -> item.getQuantity() * item.getPrice())
+                    .sum();
+        }
         GHNCreateOrderRequest request = GHNCreateOrderRequest.builder()
                 .fromName(shop.getShopName())
                 .fromPhone(shop.getPhone())
@@ -114,15 +104,16 @@ public class OrderProductServiceImpl implements OrderProductService {
                 .toWardCode(contact.getWardCode())
                 .toDistrictId(contact.getDistrictID())
                 .items(ghnItems)
-                .note(checkoutOrderProductResponse.getNote())
+                .note(checkoutOrderProductDTO.getNote())
                 .height(12).width(12).length(12).weight(100)
+                .codAmount(amount)
                 .build();
         return request;
     }
 
     @Transactional
     @Override
-    public String processOrder(CheckoutOrderProductResponse checkoutOrder) {
+    public String processOrder(CheckoutOrderProductDTO checkoutOrder) {
         var request = buildGHNOrderRequest(checkoutOrder);
         ghnService.createOrder(request);
 

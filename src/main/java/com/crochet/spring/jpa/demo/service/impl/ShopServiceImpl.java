@@ -1,5 +1,8 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
+import com.crochet.spring.jpa.demo.model.Cart;
+import com.crochet.spring.jpa.demo.model.Customer;
+import com.crochet.spring.jpa.demo.model.Product;
 import com.crochet.spring.jpa.demo.model.Shop;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.store.CreateOrUpdateShopRequest;
 import com.crochet.spring.jpa.demo.repository.ShopRepo;
@@ -51,5 +54,15 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public Shop getById(UUID id) {
         return shopRepo.findById(id).orElseThrow(() -> new RuntimeException("Cannot found shop"));
+    }
+
+    @Override
+    public Shop findShopForProducts(Customer customer) {
+        return customer.getCarts()
+                .stream()
+                .map(Cart::getProduct)
+                .map(Product::getShop)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Shop not found"));
     }
 }

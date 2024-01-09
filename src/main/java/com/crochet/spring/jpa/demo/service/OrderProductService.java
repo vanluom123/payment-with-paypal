@@ -1,12 +1,12 @@
 package com.crochet.spring.jpa.demo.service;
 
-import com.crochet.spring.jpa.demo.payload.response.CheckoutOrderProductResponse;
+import com.crochet.spring.jpa.demo.payload.dto.CheckoutOrderProductDTO;
 
 import java.util.UUID;
 
 public interface OrderProductService {
-    CheckoutOrderProductResponse checkOutOrder(UUID customerId);
+    CheckoutOrderProductDTO checkOutOrder(UUID customerId);
 
     //    @Transactional
-    String processOrder(CheckoutOrderProductResponse checkoutOrder);
+    String processOrder(CheckoutOrderProductDTO checkoutOrder);
 }

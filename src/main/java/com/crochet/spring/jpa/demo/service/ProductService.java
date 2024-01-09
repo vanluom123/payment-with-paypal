@@ -1,17 +1,20 @@
 package com.crochet.spring.jpa.demo.service;
 
+import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.model.Product;
+import com.crochet.spring.jpa.demo.payload.dto.ProductDTO;
 import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
-import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ProductService {
-    ProductResponse createOrUpdate(ProductRequest request, MultipartFile[] files);
+    ProductDTO createOrUpdate(ProductRequest request, MultipartFile[] files);
 
-    List<ProductResponse> getAll();
+    List<ProductDTO> getAll();
 
     Product getById(UUID uuid);
+
+    List<Product> getProductsFromCart(Customer customer);
 }

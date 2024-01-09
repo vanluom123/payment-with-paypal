@@ -1,7 +1,8 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
 import com.crochet.spring.jpa.demo.model.Contact;
-import com.crochet.spring.jpa.demo.payload.request.CreateContactRequest;
+import com.crochet.spring.jpa.demo.model.Customer;
+import com.crochet.spring.jpa.demo.payload.request.ContactRequest;
 import com.crochet.spring.jpa.demo.repository.ContactRepo;
 import com.crochet.spring.jpa.demo.service.ContactService;
 import com.crochet.spring.jpa.demo.service.CustomerService;
@@ -21,7 +22,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Transactional
     @Override
-    public String createContact(CreateContactRequest request) {
+    public String createContact(ContactRequest request) {
         Contact contact;
         if (request.getContactId() == null) {
             contact = new Contact();
@@ -62,5 +63,14 @@ public class ContactServiceImpl implements ContactService {
         }
         contactRepo.saveAll(contacts);
         return "Change default success";
+    }
+
+    @Override
+    public Contact findDefaultContact(Customer customer) {
+        return customer.getContacts()
+                .stream()
+                .filter(Contact::isDefault)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Default contact not found"));
     }
 }

@@ -1,11 +1,11 @@
-package com.crochet.spring.jpa.demo.payload.response;
+package com.crochet.spring.jpa.demo.payload.dto;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class ShopResponse {
+public class ShopDTO {
     private String shopName;
     private String phone;
     private String address;

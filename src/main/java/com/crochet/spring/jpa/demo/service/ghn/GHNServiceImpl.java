@@ -1,8 +1,8 @@
 package com.crochet.spring.jpa.demo.service.ghn;
 
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNDistrictResponse;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNGetWardResponse;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNProvinceResponse;
+import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNDistrictDTO;
+import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNGetWardDTO;
+import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNProvinceDTO;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCreateOrderRequest;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.store.GHNGetShopsRequest;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.store.GHNShopResponse;
@@ -91,12 +91,12 @@ public class GHNServiceImpl implements GHNService {
         data.put("from_address", shops.getAddress());
 
         var provinceJsonString = this.getProvince();
-        var getProvince = gson.fromJson(provinceJsonString, GHNProvinceResponse.class);
+        var getProvince = gson.fromJson(provinceJsonString, GHNProvinceDTO.class);
         var provinces = getProvince.getData();
 
         provinces.parallelStream().forEach(province -> {
             var districtJsonString = this.getDistrict(String.valueOf(province.getProvinceID()));
-            var getDistrict = gson.fromJson(districtJsonString, GHNDistrictResponse.class);
+            var getDistrict = gson.fromJson(districtJsonString, GHNDistrictDTO.class);
             var districts = getDistrict.getData();
 
             districts.parallelStream().forEach(district -> {
@@ -105,7 +105,7 @@ public class GHNServiceImpl implements GHNService {
                     data.put("from_district_name", district.getDistrictName());
 
                     var wardJsonString = this.getWard(String.valueOf(district.getDistrictID()));
-                    var getWard = gson.fromJson(wardJsonString, GHNGetWardResponse.class);
+                    var getWard = gson.fromJson(wardJsonString, GHNGetWardDTO.class);
                     var wards = getWard.getData();
 
                     wards.parallelStream().filter(ward ->

@@ -1,8 +1,8 @@
 package com.crochet.spring.jpa.demo.controller;
 
 import com.crochet.spring.jpa.demo.mapper.ShopMapper;
+import com.crochet.spring.jpa.demo.payload.dto.ShopDTO;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.store.CreateOrUpdateShopRequest;
-import com.crochet.spring.jpa.demo.payload.response.ShopResponse;
 import com.crochet.spring.jpa.demo.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +30,9 @@ public class ShopController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ShopResponse>> getAll() {
+    public ResponseEntity<List<ShopDTO>> getAll() {
         var shops = shopService.getAll();
-        var results = mapper.toResponses(shops);
+        var results = mapper.toDTOs(shops);
         return ResponseEntity.ok(results);
     }
 }

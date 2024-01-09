@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class GHNGetWardResponse {
+public class GHNProvinceDTO {
     @SerializedName("code")
     @Expose
     public long code;
@@ -18,5 +18,5 @@ public class GHNGetWardResponse {
     @SerializedName("data")
     @Expose
     @Valid
-    private List<GHNWard> data;
+    public List<GHNProvince> data;
 }

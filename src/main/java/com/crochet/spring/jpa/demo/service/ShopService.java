@@ -1,5 +1,6 @@
 package com.crochet.spring.jpa.demo.service;
 
+import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.model.Shop;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.store.CreateOrUpdateShopRequest;
 
@@ -12,4 +13,6 @@ public interface ShopService {
     List<Shop> getAll();
 
     Shop getById(UUID shopId);
+
+    Shop findShopForProducts(Customer customer);
 }

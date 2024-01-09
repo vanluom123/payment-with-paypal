@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class CreateContactRequest {
+public class ContactRequest {
     @SerializedName("contact_id")
     private UUID contactId;
     @SerializedName("customer_id")

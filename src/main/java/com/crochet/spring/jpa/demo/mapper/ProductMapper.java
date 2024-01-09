@@ -1,8 +1,8 @@
 package com.crochet.spring.jpa.demo.mapper;
 
 import com.crochet.spring.jpa.demo.model.Product;
+import com.crochet.spring.jpa.demo.payload.dto.ProductDTO;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNItem;
-import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -15,14 +15,14 @@ import java.util.List;
         componentModel = MappingConstants.ComponentModel.SPRING,
         uses = {CategoryMapper.class})
 public interface ProductMapper {
-    @Mapping(target = "categoryResponse", source = "category")
-    ProductResponse toResponse(Product product);
+    @Mapping(target = "categoryDTO", source = "category")
+    ProductDTO toDTO(Product product);
 
-    List<ProductResponse> toResponses(Collection<Product> products);
+    List<ProductDTO> toDTOs(Collection<Product> products);
 
     @Mapping(target = "code", source = "id")
-    @Mapping(target = "category", source = "categoryResponse")
-    GHNItem toGHNItem(ProductResponse product);
+    @Mapping(target = "category", source = "categoryDTO")
+    GHNItem toGHNItem(ProductDTO product);
 
-    List<GHNItem> toGHNItems(Collection<ProductResponse> products);
+    List<GHNItem> toGHNItems(Collection<ProductDTO> products);
 }

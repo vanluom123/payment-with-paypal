@@ -1,9 +1,11 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
 import com.crochet.spring.jpa.demo.mapper.ProductMapper;
+import com.crochet.spring.jpa.demo.model.Cart;
+import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.model.Product;
+import com.crochet.spring.jpa.demo.payload.dto.ProductDTO;
 import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
-import com.crochet.spring.jpa.demo.payload.response.ProductResponse;
 import com.crochet.spring.jpa.demo.repository.ProductRepo;
 import com.crochet.spring.jpa.demo.service.CategoryService;
 import com.crochet.spring.jpa.demo.service.ProductService;
@@ -24,16 +26,18 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepo productRepo;
+
     @Autowired
     private CategoryService categoryService;
     @Autowired
-    private ProductMapper productMapper;
-    @Autowired
     private ShopService shopService;
+
+    @Autowired
+    private ProductMapper productMapper;
 
     @Transactional
     @Override
-    public ProductResponse createOrUpdate(ProductRequest request, MultipartFile[] files) {
+    public ProductDTO createOrUpdate(ProductRequest request, MultipartFile[] files) {
         Product product;
         if (request.getProductId() == null) {
             product = new Product();
@@ -53,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
         product.setWeight(request.getWeight());
         product.setFiles(convertMultipartFileToString(files));
         product = productRepo.save(product);
-        return productMapper.toResponse(product);
+        return productMapper.toDTO(product);
     }
 
     @SneakyThrows
@@ -69,14 +73,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> getAll() {
+    public List<ProductDTO> getAll() {
         var products = productRepo.findAll();
-        return productMapper.toResponses(products);
+        return productMapper.toDTOs(products);
     }
 
     @Override
     public Product getById(UUID uuid) {
         return productRepo.findById(uuid)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
+    }
+
+    @Override
+    public List<Product> getProductsFromCart(Customer customer) {
+        return customer.getCarts()
+                .stream()
+                .map(Cart::getProduct)
+                .toList();
     }
 }

@@ -1,8 +1,8 @@
 package com.crochet.spring.jpa.demo.controller.ghn;
 
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNDistrictResponse;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNGetWardResponse;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNProvinceResponse;
+import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNDistrictDTO;
+import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNGetWardDTO;
+import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNProvinceDTO;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCreateOrderRequest;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCreateOrderResponse;
 import com.crochet.spring.jpa.demo.payload.dto.ghn.store.GHNGetShopsRequest;
@@ -12,7 +12,12 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -32,23 +37,23 @@ public class GHNController {
     }
 
     @GetMapping("/province")
-    public ResponseEntity<GHNProvinceResponse> getProvince() {
+    public ResponseEntity<GHNProvinceDTO> getProvince() {
         String result = ghnService.getProvince();
-        var response = gson.fromJson(result, GHNProvinceResponse.class);
+        var response = gson.fromJson(result, GHNProvinceDTO.class);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/district")
-    public ResponseEntity<GHNDistrictResponse> getDistrict(@RequestParam("province_id") String id) {
+    public ResponseEntity<GHNDistrictDTO> getDistrict(@RequestParam("province_id") String id) {
         String result = ghnService.getDistrict(id);
-        var response = gson.fromJson(result, GHNDistrictResponse.class);
+        var response = gson.fromJson(result, GHNDistrictDTO.class);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/ward")
-    public ResponseEntity<GHNGetWardResponse> getWard(@RequestParam("district_id") String id) {
+    public ResponseEntity<GHNGetWardDTO> getWard(@RequestParam("district_id") String id) {
         String result = ghnService.getWard(id);
-        var response = gson.fromJson(result, GHNGetWardResponse.class);
+        var response = gson.fromJson(result, GHNGetWardDTO.class);
         return ResponseEntity.ok(response);
     }
 

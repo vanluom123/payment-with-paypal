@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
 import com.crochet.spring.jpa.demo.model.Category;
-import com.crochet.spring.jpa.demo.payload.request.CreateOrUpdateCategoryRequest;
+import com.crochet.spring.jpa.demo.payload.dto.CategoryDTO;
 import com.crochet.spring.jpa.demo.repository.CategoryRepo;
 import com.crochet.spring.jpa.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepo categoryRepo;
 
     @Override
-    public String createOrUpdate(CreateOrUpdateCategoryRequest request) {
+    public String createOrUpdate(CategoryDTO request) {
         Category category;
         if (request.getId() == null) {
             category = new Category();
