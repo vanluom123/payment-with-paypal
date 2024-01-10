@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
-import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderDTO;
-import com.crochet.spring.jpa.demo.payload.response.AccessTokenResponse;
+import com.crochet.spring.jpa.demo.dto.AccessTokenDTO;
+import com.crochet.spring.jpa.demo.dto.paypal.OrderDTO;
 import com.crochet.spring.jpa.demo.properties.PayPalProperties;
 import com.crochet.spring.jpa.demo.service.PayPalService;
 import com.google.gson.Gson;
@@ -32,14 +32,14 @@ public class PayPalServiceImpl implements PayPalService {
     }
 
     @Override
-    public AccessTokenResponse getAccessToken() {
+    public AccessTokenDTO getAccessToken() {
         String uri = "https://api-m.sandbox.paypal.com/v1/oauth2/token";
         var bodyInserters = BodyInserters.fromFormData("grant_type", "client_credentials");
         var json = webClientService.invokeApi(uri,
                 HttpMethod.POST,
                 bodyInserters,
                 header -> header.set("Content-Type", "application/x-www-form-urlencoded")).block();
-        var accessTokenResponse = gson.fromJson(json, AccessTokenResponse.class);
+        var accessTokenResponse = gson.fromJson(json, AccessTokenDTO.class);
         webClientService.builder()
                 .defaultHeaders(header -> header.setBearerAuth(accessTokenResponse.getAccessToken()));
         return accessTokenResponse;

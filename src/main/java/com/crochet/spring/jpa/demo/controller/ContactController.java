@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.controller;
 
-import com.crochet.spring.jpa.demo.payload.request.ContactRequest;
+import com.crochet.spring.jpa.demo.dto.ContactCreationDTO;
 import com.crochet.spring.jpa.demo.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public class ContactController {
             @RequestParam("district_name") String districtName,
             @RequestParam("province_name") String provinceName
     ) {
-        var request = new ContactRequest(contactId,
+        var request = new ContactCreationDTO(contactId,
                 customerId,
                 name,
                 address,

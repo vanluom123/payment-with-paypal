@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.controller;
 
-import com.crochet.spring.jpa.demo.payload.dto.CategoryDTO;
+import com.crochet.spring.jpa.demo.dto.CategoryDTO;
 import com.crochet.spring.jpa.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

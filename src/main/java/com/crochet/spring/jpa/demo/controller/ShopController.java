@@ -1,8 +1,8 @@
 package com.crochet.spring.jpa.demo.controller;
 
+import com.crochet.spring.jpa.demo.dto.ShopDTO;
+import com.crochet.spring.jpa.demo.dto.ghn.store.GHNShopCreationRequest;
 import com.crochet.spring.jpa.demo.mapper.ShopMapper;
-import com.crochet.spring.jpa.demo.payload.dto.ShopDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.store.CreateOrUpdateShopRequest;
 import com.crochet.spring.jpa.demo.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class ShopController {
     private ShopMapper mapper;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createShop(@RequestBody CreateOrUpdateShopRequest request) {
+    public ResponseEntity<String> createShop(@RequestBody GHNShopCreationRequest request) {
         var result = shopService.createOrUpdate(request);
         return ResponseEntity.status(201)
                 .body(result);

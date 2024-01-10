@@ -1,14 +1,14 @@
 package com.crochet.spring.jpa.demo.service;
 
+import com.crochet.spring.jpa.demo.dto.ghn.store.GHNShopCreationRequest;
 import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.model.Shop;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.store.CreateOrUpdateShopRequest;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ShopService {
-    String createOrUpdate(CreateOrUpdateShopRequest request);
+    String createOrUpdate(GHNShopCreationRequest request);
 
     List<Shop> getAll();
 

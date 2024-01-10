@@ -1,8 +1,8 @@
 package com.crochet.spring.jpa.demo.mapper;
 
+import com.crochet.spring.jpa.demo.dto.ProductDTO;
+import com.crochet.spring.jpa.demo.dto.ghn.order.GHNItem;
 import com.crochet.spring.jpa.demo.model.Product;
-import com.crochet.spring.jpa.demo.payload.dto.ProductDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

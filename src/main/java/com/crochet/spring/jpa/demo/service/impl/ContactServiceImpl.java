@@ -1,8 +1,8 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
+import com.crochet.spring.jpa.demo.dto.ContactCreationDTO;
 import com.crochet.spring.jpa.demo.model.Contact;
 import com.crochet.spring.jpa.demo.model.Customer;
-import com.crochet.spring.jpa.demo.payload.request.ContactRequest;
 import com.crochet.spring.jpa.demo.repository.ContactRepo;
 import com.crochet.spring.jpa.demo.service.ContactService;
 import com.crochet.spring.jpa.demo.service.CustomerService;
@@ -22,7 +22,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Transactional
     @Override
-    public String createContact(ContactRequest request) {
+    public String createContact(ContactCreationDTO request) {
         Contact contact;
         if (request.getContactId() == null) {
             contact = new Contact();

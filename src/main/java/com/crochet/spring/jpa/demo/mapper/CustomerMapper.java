@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.mapper;
 
+import com.crochet.spring.jpa.demo.dto.CustomerDTO;
 import com.crochet.spring.jpa.demo.model.Customer;
-import com.crochet.spring.jpa.demo.payload.dto.CustomerDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;

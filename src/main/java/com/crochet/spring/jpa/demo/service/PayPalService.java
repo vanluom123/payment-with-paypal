@@ -1,10 +1,10 @@
 package com.crochet.spring.jpa.demo.service;
 
-import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderDTO;
-import com.crochet.spring.jpa.demo.payload.response.AccessTokenResponse;
+import com.crochet.spring.jpa.demo.dto.AccessTokenDTO;
+import com.crochet.spring.jpa.demo.dto.paypal.OrderDTO;
 
 public interface PayPalService {
-    AccessTokenResponse getAccessToken();
+    AccessTokenDTO getAccessToken();
 
     String createOrder(OrderDTO orderDTO);
 

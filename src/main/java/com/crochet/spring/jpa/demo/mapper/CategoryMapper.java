@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.mapper;
 
-import com.crochet.spring.jpa.demo.payload.dto.CategoryDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCategory;
+import com.crochet.spring.jpa.demo.dto.CategoryDTO;
+import com.crochet.spring.jpa.demo.dto.ghn.order.GHNCategory;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

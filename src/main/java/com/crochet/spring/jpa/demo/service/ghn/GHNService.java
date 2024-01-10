@@ -1,12 +1,12 @@
 package com.crochet.spring.jpa.demo.service.ghn;
 
-import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCreateOrderRequest;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.store.GHNGetShopsRequest;
+import com.crochet.spring.jpa.demo.dto.ghn.order.GHNOrderCreationRequest;
+import com.crochet.spring.jpa.demo.dto.ghn.store.GHNShopRetrievalRequest;
 
 import java.util.Map;
 
 public interface GHNService {
-    String getShopAll(GHNGetShopsRequest getShopsRequest);
+    String getShopAll(GHNShopRetrievalRequest getShopsRequest);
 
     String getProvince();
 
@@ -14,7 +14,7 @@ public interface GHNService {
 
     String getWard(String id);
 
-    String createOrder(GHNCreateOrderRequest request);
+    String createOrder(GHNOrderCreationRequest request);
 
-    Map<String, String> getAddressFromShop(GHNGetShopsRequest getShopsRequest);
+    Map<String, String> getAddressFromShop(GHNShopRetrievalRequest getShopsRequest);
 }

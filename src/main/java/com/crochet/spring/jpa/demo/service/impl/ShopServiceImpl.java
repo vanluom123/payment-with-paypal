@@ -1,10 +1,10 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
+import com.crochet.spring.jpa.demo.dto.ghn.store.GHNShopCreationRequest;
 import com.crochet.spring.jpa.demo.model.Cart;
 import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.model.Product;
 import com.crochet.spring.jpa.demo.model.Shop;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.store.CreateOrUpdateShopRequest;
 import com.crochet.spring.jpa.demo.repository.ShopRepo;
 import com.crochet.spring.jpa.demo.service.CustomerService;
 import com.crochet.spring.jpa.demo.service.ShopService;
@@ -25,7 +25,7 @@ public class ShopServiceImpl implements ShopService {
     private GHNService ghnService;
 
     @Override
-    public String createOrUpdate(CreateOrUpdateShopRequest request) {
+    public String createOrUpdate(GHNShopCreationRequest request) {
         Shop shop;
         if (request.getId() == null) {
             shop = new Shop();

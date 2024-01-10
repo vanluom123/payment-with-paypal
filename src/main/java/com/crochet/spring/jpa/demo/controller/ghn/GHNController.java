@@ -1,12 +1,12 @@
 package com.crochet.spring.jpa.demo.controller.ghn;
 
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNDistrictDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNGetWardDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNProvinceDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCreateOrderRequest;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCreateOrderResponse;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.store.GHNGetShopsRequest;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.store.GHNShopResponse;
+import com.crochet.spring.jpa.demo.dto.ghn.address.GHNDistrictDTO;
+import com.crochet.spring.jpa.demo.dto.ghn.address.GHNGetWardDTO;
+import com.crochet.spring.jpa.demo.dto.ghn.address.GHNProvinceDTO;
+import com.crochet.spring.jpa.demo.dto.ghn.order.GHNOrderCreationRequest;
+import com.crochet.spring.jpa.demo.dto.ghn.order.GHNOrderCreationResponse;
+import com.crochet.spring.jpa.demo.dto.ghn.store.GHNShopResponse;
+import com.crochet.spring.jpa.demo.dto.ghn.store.GHNShopRetrievalRequest;
 import com.crochet.spring.jpa.demo.service.ghn.GHNService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class GHNController {
     private Gson gson;
 
     @PostMapping("/shop/all")
-    public ResponseEntity<GHNShopResponse> getShopAll(@RequestBody GHNGetShopsRequest request) {
+    public ResponseEntity<GHNShopResponse> getShopAll(@RequestBody GHNShopRetrievalRequest request) {
         String result = ghnService.getShopAll(request);
         var response = gson.fromJson(result, GHNShopResponse.class);
         return ResponseEntity.ok(response);
@@ -58,15 +58,15 @@ public class GHNController {
     }
 
     @PostMapping("/order/create")
-    public ResponseEntity<GHNCreateOrderResponse> createOrder(@RequestBody GHNCreateOrderRequest request) {
+    public ResponseEntity<GHNOrderCreationResponse> createOrder(@RequestBody GHNOrderCreationRequest request) {
         String result = ghnService.createOrder(request);
-        var payload = gson.fromJson(result, GHNCreateOrderResponse.class);
+        var payload = gson.fromJson(result, GHNOrderCreationResponse.class);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(payload);
     }
 
     @PostMapping("/shop/info")
-    public ResponseEntity<Map<String, String>> getShopInfo(@RequestBody GHNGetShopsRequest request) {
+    public ResponseEntity<Map<String, String>> getShopInfo(@RequestBody GHNShopRetrievalRequest request) {
         return ResponseEntity.ok(ghnService.getAddressFromShop(request));
     }
 }

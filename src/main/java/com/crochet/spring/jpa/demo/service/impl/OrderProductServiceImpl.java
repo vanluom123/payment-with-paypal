@@ -1,5 +1,11 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
+import com.crochet.spring.jpa.demo.dto.CheckoutOrderProductDTO;
+import com.crochet.spring.jpa.demo.dto.ContactDTO;
+import com.crochet.spring.jpa.demo.dto.ShopDTO;
+import com.crochet.spring.jpa.demo.dto.ghn.order.GHNOrderCreationRequest;
+import com.crochet.spring.jpa.demo.dto.paypal.OrderDTO;
+import com.crochet.spring.jpa.demo.dto.paypal.OrderResponseDTO;
 import com.crochet.spring.jpa.demo.mapper.ContactMapper;
 import com.crochet.spring.jpa.demo.mapper.CustomerMapper;
 import com.crochet.spring.jpa.demo.mapper.ProductMapper;
@@ -8,21 +14,20 @@ import com.crochet.spring.jpa.demo.model.Cart;
 import com.crochet.spring.jpa.demo.model.Contact;
 import com.crochet.spring.jpa.demo.model.OrderProduct;
 import com.crochet.spring.jpa.demo.model.OrderProductDetail;
-import com.crochet.spring.jpa.demo.payload.dto.CheckoutOrderProductDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ContactDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ShopDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCreateOrderRequest;
 import com.crochet.spring.jpa.demo.repository.OrderProductRepo;
 import com.crochet.spring.jpa.demo.service.CartService;
 import com.crochet.spring.jpa.demo.service.ContactService;
+import com.crochet.spring.jpa.demo.service.CurrencyService;
 import com.crochet.spring.jpa.demo.service.CustomerService;
 import com.crochet.spring.jpa.demo.service.OrderProductDetailService;
 import com.crochet.spring.jpa.demo.service.OrderProductService;
+import com.crochet.spring.jpa.demo.service.PayPalService;
 import com.crochet.spring.jpa.demo.service.ProductService;
 import com.crochet.spring.jpa.demo.service.ShopService;
 import com.crochet.spring.jpa.demo.service.ghn.GHNService;
 import com.crochet.spring.jpa.demo.type.OrderStatus;
 import com.crochet.spring.jpa.demo.type.PaymentMethod;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +58,10 @@ public class OrderProductServiceImpl implements OrderProductService {
     private ProductService productService;
     @Autowired
     private ShopService shopService;
+    @Autowired
+    private PayPalService payPalService;
+    @Autowired
+    private CurrencyService currencyService;
 
     @Autowired
     private ProductMapper productMapper;
@@ -63,8 +72,11 @@ public class OrderProductServiceImpl implements OrderProductService {
     @Autowired
     private CustomerMapper customerMapper;
 
+    @Autowired
+    private Gson gson;
+
     @Override
-    public CheckoutOrderProductDTO checkOutOrder(UUID customerId) {
+    public CheckoutOrderProductDTO checkOutOrder(UUID customerId, int paymentMethod) {
         var customer = customerService.getCustomerById(customerId);
 
         Contact contact = contactService.findDefaultContact(customer);
@@ -75,12 +87,13 @@ public class OrderProductServiceImpl implements OrderProductService {
                 .shop(shop)
                 .products(productMapper.toDTOs(productService.getProductsFromCart(customer)))
                 .customer(customerMapper.toDTO(customer))
+                .paymentMethod(paymentMethod)
                 .build();
 
         return checkoutOrderProduct;
     }
 
-    private GHNCreateOrderRequest buildGHNOrderRequest(CheckoutOrderProductDTO checkoutOrderProductDTO) {
+    private GHNOrderCreationRequest buildGHNOrderRequest(CheckoutOrderProductDTO checkoutOrderProductDTO) {
         ShopDTO shop = checkoutOrderProductDTO.getShop();
         ContactDTO contact = checkoutOrderProductDTO.getContact();
         var ghnItems = productMapper.toGHNItems(checkoutOrderProductDTO.getProducts());
@@ -90,8 +103,19 @@ public class OrderProductServiceImpl implements OrderProductService {
             amount = ghnItems.stream()
                     .mapToInt(item -> item.getQuantity() * item.getPrice())
                     .sum();
+        } else {
+            var totalAmount = ghnItems.stream()
+                    .mapToInt(item -> item.getQuantity() * item.getPrice())
+                    .sum();
+            var exchangeRate = currencyService.convertCurrency("VND", "USD");
+            var usdRate = exchangeRate.getData().get("USD").getValue();
+            var paypalOrder = OrderDTO.builder()
+                    .createPayPalOrderDTO("USD", String.valueOf(usdRate * totalAmount))
+                    .build();
+            var content = payPalService.createOrder(paypalOrder);
+            var orderResponseDTO = gson.fromJson(content, OrderResponseDTO.class);
         }
-        GHNCreateOrderRequest request = GHNCreateOrderRequest.builder()
+        GHNOrderCreationRequest request = GHNOrderCreationRequest.builder()
                 .fromName(shop.getShopName())
                 .fromPhone(shop.getPhone())
                 .fromAddress(shop.getAddress())

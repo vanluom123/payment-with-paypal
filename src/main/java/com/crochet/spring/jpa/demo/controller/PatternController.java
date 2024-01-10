@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.controller;
 
-import com.crochet.spring.jpa.demo.payload.request.PatternRequest;
-import com.crochet.spring.jpa.demo.payload.response.PatternResponse;
+import com.crochet.spring.jpa.demo.dto.PatternCreationDTO;
+import com.crochet.spring.jpa.demo.dto.PatternDTO;
 import com.crochet.spring.jpa.demo.service.PatternService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,15 +24,15 @@ public class PatternController {
     private PatternService patternService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestPart PatternRequest request,
+    public ResponseEntity<String> create(@RequestPart PatternCreationDTO request,
                                          @RequestPart MultipartFile[] files) {
         var response = patternService.create(request, files);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/getById")
-    public ResponseEntity<PatternResponse> getPattern(@RequestParam("customerId") UUID customerId,
-                                                      @RequestParam("patternId") UUID patternId) {
+    public ResponseEntity<PatternDTO> getPattern(@RequestParam("customerId") UUID customerId,
+                                                 @RequestParam("patternId") UUID patternId) {
         var response = patternService.getPattern(customerId, patternId);
         return ResponseEntity.ok(response);
     }

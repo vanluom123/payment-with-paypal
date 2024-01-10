@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.service;
 
-import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderResponseDTO;
+import com.crochet.spring.jpa.demo.dto.paypal.OrderResponseDTO;
 
 import java.util.UUID;
 

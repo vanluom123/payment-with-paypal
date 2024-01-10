@@ -1,32 +1,24 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
+import com.crochet.spring.jpa.demo.dto.paypal.OrderDTO;
+import com.crochet.spring.jpa.demo.dto.paypal.OrderResponseDTO;
+import com.crochet.spring.jpa.demo.dto.paypal.PaymentCaptureResponseDTO;
 import com.crochet.spring.jpa.demo.model.OrderPattern;
 import com.crochet.spring.jpa.demo.model.OrderPatternDetail;
-import com.crochet.spring.jpa.demo.payload.dto.paypal.CapturePaymentResponseDTO;
-import com.crochet.spring.jpa.demo.payload.dto.paypal.MoneyDTO;
-import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderDTO;
-import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderResponseDTO;
-import com.crochet.spring.jpa.demo.payload.dto.paypal.PayPalAppContextDTO;
-import com.crochet.spring.jpa.demo.payload.dto.paypal.PurchaseUnit;
 import com.crochet.spring.jpa.demo.repository.CustomerRepo;
 import com.crochet.spring.jpa.demo.repository.OrderPatternDetailRepo;
 import com.crochet.spring.jpa.demo.repository.OrderPatternRepo;
 import com.crochet.spring.jpa.demo.repository.PatternRepo;
 import com.crochet.spring.jpa.demo.service.OrderPatternDetailService;
 import com.crochet.spring.jpa.demo.service.PayPalService;
-import com.crochet.spring.jpa.demo.type.paypal.OrderIntent;
-import com.crochet.spring.jpa.demo.type.paypal.PaymentLandingPage;
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -55,8 +47,9 @@ public class OrderPatternDetailServiceImpl implements OrderPatternDetailService 
         var pattern = patternRepo.findById(patternId)
                 .orElseThrow(() -> new RuntimeException("Pattern not found"));
 
-        var orderDTO = createOrderDTO(pattern.getCurrencyCode().getValue(),
-                String.valueOf(pattern.getPrice()));
+        var orderDTO = OrderDTO.builder()
+                .createPayPalOrderDTO(pattern.getCurrencyCode().getValue(),
+                        String.valueOf(pattern.getPrice())).build();
 
         var content = payPalService.createOrder(orderDTO);
         var orderResponseDTO = gson.fromJson(content, OrderResponseDTO.class);
@@ -78,36 +71,12 @@ public class OrderPatternDetailServiceImpl implements OrderPatternDetailService 
         return orderResponseDTO;
     }
 
-    private static OrderDTO createOrderDTO(String currencyCode, String value) {
-        String baseUri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        var appContext = PayPalAppContextDTO.builder()
-                .returnUrl(baseUri + "/api/order-pattern-detail/success")
-                .brandName("Little Crochet")
-                .landingPage(PaymentLandingPage.BILLING)
-                .build();
-        MoneyDTO moneyDTO = MoneyDTO.builder()
-                .currencyCode(currencyCode)
-                .value(String.valueOf(value))
-                .build();
-        PurchaseUnit purchaseUnit = PurchaseUnit.builder()
-                .amount(moneyDTO)
-                .build();
-        List<PurchaseUnit> purchaseUnits = new ArrayList<>();
-        purchaseUnits.add(purchaseUnit);
-        var orderDTO = OrderDTO.builder()
-                .intent(OrderIntent.CAPTURE)
-                .applicationContext(appContext)
-                .purchaseUnits(purchaseUnits)
-                .build();
-        return orderDTO;
-    }
-
     @SneakyThrows
     @Transactional
     @Override
     public String processPayPalOrderDetail(String transactionId) {
         var content = payPalService.capturePayment(transactionId);
-        var payload = gson.fromJson(content, CapturePaymentResponseDTO.class);
+        var payload = gson.fromJson(content, PaymentCaptureResponseDTO.class);
         var orderPatternDetail = orderPatternDetailRepo.findByTransactionId(transactionId)
                 .orElseThrow(() -> new RuntimeException("Order not existed"));
         orderPatternDetail.setStatus(payload.getStatus());

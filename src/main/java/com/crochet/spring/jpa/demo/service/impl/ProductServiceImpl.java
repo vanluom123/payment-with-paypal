@@ -1,11 +1,11 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
+import com.crochet.spring.jpa.demo.dto.ProductCreationDTO;
+import com.crochet.spring.jpa.demo.dto.ProductDTO;
 import com.crochet.spring.jpa.demo.mapper.ProductMapper;
 import com.crochet.spring.jpa.demo.model.Cart;
 import com.crochet.spring.jpa.demo.model.Customer;
 import com.crochet.spring.jpa.demo.model.Product;
-import com.crochet.spring.jpa.demo.payload.dto.ProductDTO;
-import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
 import com.crochet.spring.jpa.demo.repository.ProductRepo;
 import com.crochet.spring.jpa.demo.service.CategoryService;
 import com.crochet.spring.jpa.demo.service.ProductService;
@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public ProductDTO createOrUpdate(ProductRequest request, MultipartFile[] files) {
+    public ProductDTO createOrUpdate(ProductCreationDTO request, MultipartFile[] files) {
         Product product;
         if (request.getProductId() == null) {
             product = new Product();

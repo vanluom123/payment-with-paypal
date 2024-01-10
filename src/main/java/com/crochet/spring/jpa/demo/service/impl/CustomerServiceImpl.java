@@ -1,9 +1,9 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
+import com.crochet.spring.jpa.demo.dto.CustomerCreationDTO;
+import com.crochet.spring.jpa.demo.dto.CustomerDTO;
 import com.crochet.spring.jpa.demo.mapper.CustomerMapper;
 import com.crochet.spring.jpa.demo.model.Customer;
-import com.crochet.spring.jpa.demo.payload.dto.CustomerDTO;
-import com.crochet.spring.jpa.demo.payload.request.CustomerRequest;
 import com.crochet.spring.jpa.demo.repository.CustomerRepo;
 import com.crochet.spring.jpa.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     @Override
-    public CustomerDTO save(CustomerRequest request) {
+    public CustomerDTO save(CustomerCreationDTO request) {
         Customer customer;
         if (request.getId() == null) {
             customer = new Customer();

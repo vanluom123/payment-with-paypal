@@ -1,11 +1,11 @@
 package com.crochet.spring.jpa.demo.service.ghn;
 
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNDistrictDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNGetWardDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.address.GHNProvinceDTO;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.order.GHNCreateOrderRequest;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.store.GHNGetShopsRequest;
-import com.crochet.spring.jpa.demo.payload.dto.ghn.store.GHNShopResponse;
+import com.crochet.spring.jpa.demo.dto.ghn.address.GHNDistrictDTO;
+import com.crochet.spring.jpa.demo.dto.ghn.address.GHNGetWardDTO;
+import com.crochet.spring.jpa.demo.dto.ghn.address.GHNProvinceDTO;
+import com.crochet.spring.jpa.demo.dto.ghn.order.GHNOrderCreationRequest;
+import com.crochet.spring.jpa.demo.dto.ghn.store.GHNShopResponse;
+import com.crochet.spring.jpa.demo.dto.ghn.store.GHNShopRetrievalRequest;
 import com.crochet.spring.jpa.demo.properties.GHNProperties;
 import com.google.gson.Gson;
 import jakarta.annotation.PostConstruct;
@@ -38,7 +38,7 @@ public class GHNServiceImpl implements GHNService {
     }
 
     @Override
-    public String getShopAll(GHNGetShopsRequest getShopsRequest) {
+    public String getShopAll(GHNShopRetrievalRequest getShopsRequest) {
         String url = "/shiip/public-api/v2/shop/all";
         String payload = gson.toJson(getShopsRequest);
         String result = clientService.invokeApi(url, HttpMethod.POST, payload).block();
@@ -67,7 +67,7 @@ public class GHNServiceImpl implements GHNService {
     }
 
     @Override
-    public String createOrder(GHNCreateOrderRequest request) {
+    public String createOrder(GHNOrderCreationRequest request) {
         String url = "/shiip/public-api/v2/shipping-order/create";
         var payload = gson.toJson(request);
         String result = clientService.invokeApi(url,
@@ -77,7 +77,7 @@ public class GHNServiceImpl implements GHNService {
     }
 
     @Override
-    public Map<String, String> getAddressFromShop(GHNGetShopsRequest getShopsRequest) {
+    public Map<String, String> getAddressFromShop(GHNShopRetrievalRequest getShopsRequest) {
         Map<String, String> data = new ConcurrentHashMap<>();
 
         var shopJsonString = this.getShopAll(getShopsRequest);

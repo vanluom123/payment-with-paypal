@@ -1,9 +1,9 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
+import com.crochet.spring.jpa.demo.dto.PatternCreationDTO;
+import com.crochet.spring.jpa.demo.dto.PatternDTO;
 import com.crochet.spring.jpa.demo.mapper.PatternMapper;
 import com.crochet.spring.jpa.demo.model.Pattern;
-import com.crochet.spring.jpa.demo.payload.request.PatternRequest;
-import com.crochet.spring.jpa.demo.payload.response.PatternResponse;
 import com.crochet.spring.jpa.demo.repository.OrderPatternDetailRepo;
 import com.crochet.spring.jpa.demo.repository.PatternRepo;
 import com.crochet.spring.jpa.demo.service.PatternService;
@@ -28,7 +28,7 @@ public class PatternServiceImpl implements PatternService {
     private PatternMapper patternMapper;
 
     @Override
-    public String create(PatternRequest request, MultipartFile[] files) {
+    public String create(PatternCreationDTO request, MultipartFile[] files) {
         var pattern = Pattern.builder()
                 .name(request.getName())
                 .price(request.getPrice())
@@ -65,7 +65,7 @@ public class PatternServiceImpl implements PatternService {
     }
 
     @Override
-    public PatternResponse getPattern(UUID customerId, UUID patternId) {
+    public PatternDTO getPattern(UUID customerId, UUID patternId) {
         var pattern = patternRepo.findCompletedPatterns(customerId, patternId)
                 .orElseThrow(() -> new RuntimeException("Pattern not ordered"));
         return patternMapper.toResponse(pattern);

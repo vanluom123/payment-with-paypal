@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.controller;
 
-import com.crochet.spring.jpa.demo.payload.dto.paypal.OrderResponseDTO;
+import com.crochet.spring.jpa.demo.dto.paypal.OrderResponseDTO;
 import com.crochet.spring.jpa.demo.service.OrderPatternDetailService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

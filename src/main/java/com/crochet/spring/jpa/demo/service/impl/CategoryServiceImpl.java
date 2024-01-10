@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.service.impl;
 
+import com.crochet.spring.jpa.demo.dto.CategoryDTO;
 import com.crochet.spring.jpa.demo.model.Category;
-import com.crochet.spring.jpa.demo.payload.dto.CategoryDTO;
 import com.crochet.spring.jpa.demo.repository.CategoryRepo;
 import com.crochet.spring.jpa.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

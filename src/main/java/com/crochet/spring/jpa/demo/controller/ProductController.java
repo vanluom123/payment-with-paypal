@@ -1,8 +1,7 @@
 package com.crochet.spring.jpa.demo.controller;
 
-import com.crochet.spring.jpa.demo.payload.dto.ProductDTO;
-import com.crochet.spring.jpa.demo.payload.request.ProductRequest;
-import com.crochet.spring.jpa.demo.payload.response.ApiResponse;
+import com.crochet.spring.jpa.demo.dto.ProductCreationDTO;
+import com.crochet.spring.jpa.demo.dto.ProductDTO;
 import com.crochet.spring.jpa.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,7 +24,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ApiResponse<ProductDTO>> create(
+    public ResponseEntity<ProductDTO> create(
             @RequestParam(value = "productId", required = false) UUID productId,
             @RequestParam(value = "category_id", required = false) UUID categoryId,
             @RequestParam(value = "shop_id", required = false) UUID shopId,
@@ -38,7 +37,7 @@ public class ProductController {
             @RequestParam("weight") int weight,
             @RequestPart(required = false) MultipartFile[] files
     ) {
-        var request = ProductRequest.builder()
+        var request = ProductCreationDTO.builder()
                 .productId(productId)
                 .categoryId(categoryId)
                 .shopId(shopId)
@@ -50,21 +49,13 @@ public class ProductController {
                 .length(length)
                 .weight(weight)
                 .build();
-        var result = ApiResponse.<ProductDTO>builder()
-                .success(true)
-                .message("Create product success")
-                .data(productService.createOrUpdate(request, files))
-                .build();
+        var result = productService.createOrUpdate(request, files);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProductDTO>>> getAll() {
-        var result = ApiResponse.<List<ProductDTO>>builder()
-                .success(true)
-                .message("Get success")
-                .data(productService.getAll())
-                .build();
+    public ResponseEntity<List<ProductDTO>> getAll() {
+        var result = productService.getAll();
         return ResponseEntity.ok(result);
     }
 }

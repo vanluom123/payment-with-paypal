@@ -1,7 +1,7 @@
 package com.crochet.spring.jpa.demo.service;
 
+import com.crochet.spring.jpa.demo.dto.CategoryDTO;
 import com.crochet.spring.jpa.demo.model.Category;
-import com.crochet.spring.jpa.demo.payload.dto.CategoryDTO;
 
 import java.util.List;
 import java.util.UUID;
