@@ -16,34 +16,36 @@ import java.util.List;
 @Data
 @Accessors(fluent = true)
 public class OrderDTOBuilder {
-    private OrderIntent intent;
-    private List<PurchaseUnit> purchaseUnits;
-    private PayPalAppContextDTO applicationContext;
+  private OrderIntent intent;
+  private List<PurchaseUnit> purchaseUnits;
+  private PayPalAppContextDTO applicationContext;
 
-    public OrderDTO build() {
-        return new OrderDTO(intent, purchaseUnits, applicationContext);
-    }
+  public OrderDTO build() {
+    return new OrderDTO(intent, purchaseUnits, applicationContext);
+  }
 
-    public OrderDTOBuilder createPayPalOrderDTO(String currencyCode, String value) {
-        String baseUri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        var appContext = PayPalAppContextDTO.builder()
-                .returnUrl(baseUri + "/api/order-pattern-detail/success")
-                .brandName("Little Crochet")
-                .landingPage(PaymentLandingPage.BILLING)
-                .build();
-        MoneyDTO moneyDTO = MoneyDTO.builder()
-                .currencyCode(currencyCode)
-                .value(String.valueOf(value))
-                .build();
-        PurchaseUnit purchaseUnit = PurchaseUnit.builder()
-                .amount(moneyDTO)
-                .build();
-        List<PurchaseUnit> purchaseUnits = new ArrayList<>();
-        purchaseUnits.add(purchaseUnit);
-        intent(OrderIntent.CAPTURE)
-                .applicationContext(appContext)
-                .purchaseUnits(purchaseUnits)
-                .build();
-        return this;
-    }
+  public OrderDTOBuilder createPayPalOrderDTO(String currencyCode,
+                                              String value,
+                                              String returnUrl) {
+    String baseUri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+    var appContext = PayPalAppContextDTO.builder()
+        .returnUrl(baseUri + returnUrl)
+        .brandName("Little Crochet")
+        .landingPage(PaymentLandingPage.BILLING)
+        .build();
+    MoneyDTO moneyDTO = MoneyDTO.builder()
+        .currencyCode(currencyCode)
+        .value(String.valueOf(value))
+        .build();
+    PurchaseUnit purchaseUnit = PurchaseUnit.builder()
+        .amount(moneyDTO)
+        .build();
+    List<PurchaseUnit> purchaseUnits = new ArrayList<>();
+    purchaseUnits.add(purchaseUnit);
+    intent(OrderIntent.CAPTURE)
+        .applicationContext(appContext)
+        .purchaseUnits(purchaseUnits)
+        .build();
+    return this;
+  }
 }

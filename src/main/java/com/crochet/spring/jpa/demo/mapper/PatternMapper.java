@@ -10,9 +10,9 @@ import java.util.Collection;
 import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        componentModel = MappingConstants.ComponentModel.SPRING)
+    componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PatternMapper {
-    PatternDTO toResponse(Pattern pattern);
+  PatternDTO toDTO(Pattern pattern);
 
-    List<PatternDTO> toResponses(Collection<Pattern> patterns);
+  List<PatternDTO> toDTOs(Collection<Pattern> patterns);
 }

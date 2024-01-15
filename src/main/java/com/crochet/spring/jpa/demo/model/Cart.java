@@ -1,11 +1,20 @@
 package com.crochet.spring.jpa.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,14 +24,20 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cart extends BaseEntity {
-    @Column(name = "quantity", columnDefinition = "INTEGER DEFAULT 1 NOT NULL")
-    private Integer quantity;
+  @Column(name = "total_amount", columnDefinition = "DOUBLE CHECK (total_amount > 0) NOT NULL")
+  private double totalAmount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+  @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+  private Set<CartDetail> cartDetails;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "customer_id", columnDefinition = "BINARY(16) NOT NULL")
+  private Customer customer;
+
+  public double getTotalAmount() {
+    totalAmount = cartDetails.stream()
+        .mapToDouble(CartDetail::getTotalAmount)
+        .sum();
+    return totalAmount;
+  }
 }

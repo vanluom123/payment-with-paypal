@@ -1,7 +1,6 @@
 package com.crochet.spring.jpa.demo.controller;
 
 import com.crochet.spring.jpa.demo.service.CartService;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,19 +13,16 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
-    @Autowired
-    private CartService cartService;
+  @Autowired
+  private CartService cartService;
 
-    @Autowired
-    private Gson gson;
-
-    @PostMapping("/add")
-    public ResponseEntity<String> addCart(
-            @RequestParam("customer_id") UUID customerId,
-            @RequestParam("product_id") UUID productId,
-            @RequestParam("quantity") int quantity
-    ) {
-        var result = cartService.addProductToCart(customerId, productId, quantity);
-        return ResponseEntity.ok(result);
-    }
+  @PostMapping("/add")
+  public ResponseEntity<String> addCart(
+      @RequestParam("customer_id") UUID customerId,
+      @RequestParam("product_id") UUID productId,
+      @RequestParam("quantity") int quantity
+  ) {
+    var result = cartService.addProductToCart(customerId, productId, quantity);
+    return ResponseEntity.ok(result);
+  }
 }

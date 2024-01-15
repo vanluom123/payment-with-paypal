@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,34 +24,34 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Shop extends BaseEntity {
-    @Column(name = "shop_name", columnDefinition = "NVARCHAR(255)")
-    private String shopName;
+  @Column(name = "shop_name", columnDefinition = "NVARCHAR(255)")
+  private String shopName;
 
-    @Column(name = "phone", unique = true)
-    private String phone;
+  @Column(name = "phone", unique = true)
+  private String phone;
 
-    @Column(name = "address", columnDefinition = "NVARCHAR(255)")
-    private String address;
+  @Column(name = "address", columnDefinition = "NVARCHAR(255)")
+  private String address;
 
-    @Column(name = "ward_code")
-    private String wardCode;
+  @Column(name = "ward_code")
+  private String wardCode;
 
-    @Column(name = "ward_name", columnDefinition = "NVARCHAR(255)")
-    private String wardName;
+  @Column(name = "ward_name", columnDefinition = "NVARCHAR(255)")
+  private String wardName;
 
-    @Column(name = "district_id")
-    private int districtID;
+  @Column(name = "district_id")
+  private int districtID;
 
-    @Column(name = "district_name", columnDefinition = "NVARCHAR(255)")
-    private String districtName;
+  @Column(name = "district_name", columnDefinition = "NVARCHAR(255)")
+  private String districtName;
 
-    @Column(name = "province_name", columnDefinition = "NVARCHAR(255)")
-    private String provinceName;
+  @Column(name = "province_name", columnDefinition = "NVARCHAR(255)")
+  private String provinceName;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "customer_id", columnDefinition = "BINARY(16) NOT NULL")
+  private Customer customer;
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
-    private List<Product> products;
+  @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+  private Set<Product> products;
 }

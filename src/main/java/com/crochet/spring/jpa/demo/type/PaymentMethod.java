@@ -4,12 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum PaymentMethod {
-    PAYMENT_AFTER_RECEIVED(0),
-    PAYMENT_PAYPAL(1);
+  CASH_ON_DELIVERY("Cash on delivery"),
+  PAYPAL("PayPal");
 
-    PaymentMethod(int value) {
-        this.value = value;
-    }
+  PaymentMethod(String value) {
+    this.value = value;
+  }
 
-    private final int value;
+  private final String value;
 }

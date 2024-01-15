@@ -1,6 +1,6 @@
 package com.crochet.spring.jpa.demo.repository;
 
-import com.crochet.spring.jpa.demo.model.OrderPattern;
+import com.crochet.spring.jpa.demo.model.PatternOrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface OrderPatternRepo extends JpaRepository<OrderPattern, UUID> {
-    Optional<OrderPattern> findOrderByCustomerId(UUID customerId);
+public interface PatternOrderDetailRepo extends JpaRepository<PatternOrderDetail, UUID> {
+  Optional<PatternOrderDetail> findByTransactionId(String transactionId);
 }

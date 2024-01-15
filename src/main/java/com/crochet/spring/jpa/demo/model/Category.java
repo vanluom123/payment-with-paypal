@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,9 +21,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category extends BaseEntity {
-    @Column(name = "name", columnDefinition = "NVARCHAR(255) NOT NULL", unique = true)
-    private String name;
+  @Column(name = "name", columnDefinition = "NVARCHAR(255) NOT NULL", unique = true)
+  private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Product> products;
+  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+  private Set<Product> products;
 }
