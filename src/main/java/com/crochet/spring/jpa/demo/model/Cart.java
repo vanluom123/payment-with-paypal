@@ -9,6 +9,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,8 +25,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cart extends BaseEntity {
+  private static final int ZERO = 0;
+
   @Column(name = "total_amount", columnDefinition = "DOUBLE CHECK (total_amount > 0) NOT NULL")
-  private double totalAmount;
+  @Builder.Default
+  private double totalAmount = ZERO;
 
   @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
   private Set<CartDetail> cartDetails;
@@ -35,9 +39,11 @@ public class Cart extends BaseEntity {
   private Customer customer;
 
   public double getTotalAmount() {
-    totalAmount = cartDetails.stream()
-        .mapToDouble(CartDetail::getTotalAmount)
-        .sum();
+    if (totalAmount == ZERO) {
+      totalAmount = cartDetails.stream()
+          .mapToDouble(CartDetail::getTotalAmount)
+          .sum();
+    }
     return totalAmount;
   }
 }
