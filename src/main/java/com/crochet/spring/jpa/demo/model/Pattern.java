@@ -1,6 +1,7 @@
 package com.crochet.spring.jpa.demo.model;
 
-import com.crochet.spring.jpa.demo.type.CurrencyCode;
+import com.crochet.spring.jpa.demo.type.paypal.CurrencyCode;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,22 +25,22 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 public class Pattern extends BaseEntity {
-    @Column(name = "name", nullable = false)
-    private String name;
+  @Column(name = "name", nullable = false)
+  private String name;
 
-    @Column(name = "price", columnDefinition = "double default 0", nullable = false)
-    private double price;
+  @Column(name = "price", columnDefinition = "DOUBLE CHECK (price > 0) NOT NULL")
+  private double price;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "currency_code", columnDefinition = "varchar(20) default 'USD'", nullable = false)
-    private CurrencyCode currencyCode;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "currency_code", columnDefinition = "VARCHAR(20) DEFAULT 'USD'", nullable = false)
+  private CurrencyCode currencyCode;
 
-    @ElementCollection
-    @CollectionTable(name = "pattern_files",
-            joinColumns = @JoinColumn(name = "pattern_id", nullable = false))
-    @Column(name = "file_name", columnDefinition = "LONGBLOB")
-    private List<String> files;
+  @ElementCollection
+  @CollectionTable(name = "pattern_files",
+      joinColumns = @JoinColumn(name = "pattern_id", columnDefinition = "BINARY(16) NOT NULL"))
+  @Column(name = "file_name", columnDefinition = "LONGBLOB")
+  private Set<String> files;
 
-    @OneToMany(mappedBy = "pattern")
-    private List<OrderPatternDetail> orderPatternDetails;
+  @OneToMany(mappedBy = "pattern", cascade = CascadeType.ALL)
+  private Set<PatternOrderDetail> patternOrderDetails;
 }
