@@ -2,6 +2,7 @@ package com.crochet.spring.jpa.demo.controller;
 
 import com.crochet.spring.jpa.demo.dto.CheckoutProductOrderDTO;
 import com.crochet.spring.jpa.demo.service.ProductOrderService;
+import com.crochet.spring.jpa.demo.type.PaymentMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +30,10 @@ public class ProductOrderController {
 
   @PostMapping("/processOrder")
   public ResponseEntity<String> processOrder(
+      @RequestParam("payment_method") PaymentMethod paymentMethod,
       @RequestBody CheckoutProductOrderDTO response
   ) {
+    response.setPaymentMethod(paymentMethod);
     var result = productOrderService.processOrder(response);
     return ResponseEntity.ok(result);
   }

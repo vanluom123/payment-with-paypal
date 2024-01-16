@@ -132,15 +132,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
   @Transactional
   @Override
   public String processOrder(CheckoutProductOrderDTO checkoutOrder) {
-    if (checkoutOrder.getPayment().getPaymentStatus() != PaymentStatus.CREATED) {
+    if (checkoutOrder.getPaymentMethod() == PaymentMethod.PAYPAL &&
+        checkoutOrder.getPayment().getPaymentStatus() != PaymentStatus.CREATED) {
       return "Cannot create order";
-    }
-
-    var request = buildGHNOrderRequest(checkoutOrder);
-    var ghnOrderJson = ghnService.createOrder(request);
-    var ghnOrder = gson.fromJson(ghnOrderJson, GHNOrderCreationResponse.class);
-    if (ghnOrder.getCode() != HttpStatus.OK.value() || ghnOrder.getCode() != HttpStatus.CREATED.value()) {
-      return "Cannot create shipping";
     }
 
     // Check if the customer exists or not
@@ -186,6 +180,14 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
     // Delete all carts
     cartService.deleteCart(cart);
+
+    // Create shipping
+    var request = buildGHNOrderRequest(checkoutOrder);
+    var ghnOrderJson = ghnService.createOrder(request);
+    var ghnOrder = gson.fromJson(ghnOrderJson, GHNOrderCreationResponse.class);
+    if (ghnOrder.getCode() != HttpStatus.OK.value()) {
+      return "Cannot create shipping";
+    }
 
     return "Order success";
   }

@@ -56,11 +56,11 @@ public class PatternOrderDetailServiceImpl implements PatternOrderDetailService 
     var content = payPalService.createOrder(orderDTO);
     var orderResponseDTO = gson.fromJson(content, OrderResponseDTO.class);
 
+    // Create pattern order
     var order = PatternOrder.builder()
         .customer(customer)
         .build();
-    order = patternOrderRepo.save(order);
-
+    // Create pattern order detail
     var orderPatternDetail = PatternOrderDetail.builder()
         .patternOrder(order)
         .pattern(pattern)
@@ -68,7 +68,8 @@ public class PatternOrderDetailServiceImpl implements PatternOrderDetailService 
         .status(orderResponseDTO.getStatus())
         .orderDate(Date.from(Instant.now()))
         .build();
-    patternOrderDetailRepo.save(orderPatternDetail);
+    order.getPatternOrderDetails().add(orderPatternDetail);
+    patternOrderRepo.save(order);
 
     return orderResponseDTO;
   }
