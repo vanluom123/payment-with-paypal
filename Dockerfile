@@ -8,8 +8,6 @@ ENV GITHUB_ACTOR $GITHUB_ACTOR
 ENV GITHUB_TOKEN $GITHUB_TOKEN
 
 COPY . /workspace/app
-RUN --mount=type=cache,target=/root/.gradle
-RUN chmod +x ./gradlew
 RUN ./gradlew clean build
 RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*-SNAPSHOT.jar)
 
