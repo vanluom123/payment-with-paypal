@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: vanluompaymentwithpaypal 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vanluompaymentwithpaypal
+  template:
+    metadata:
+      labels:
+        app: vanluompaymentwithpaypal 
+    spec:
+      containers:
+        - name: vanluompaymentwithpaypal 
+          image: paypalpayment01.azurecr.io/vanluompaymentwithpaypal
+          ports:
+          - containerPort: 80
