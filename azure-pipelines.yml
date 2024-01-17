@@ -40,6 +40,7 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+        arguments: '--build-arg GITHUB_ACTOR=vanluom123 --build-arg GITHUB_TOKEN=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'
 
     - upload: manifests
       artifact: manifests
